@@ -1,0 +1,12 @@
+FirebaseFirestore _firestore = FirebaseFirestore.instance;
+DocumentSnapshot table = await FirebaseFirestore.instance.collection("Course").doc("zhwvLXbtlM7Ee1r8a7tp").get();
+print(table.data().toString());
+Map<String, dynamic> newUser = {
+   "title" : "hmm",
+   "id" : 12,
+};
+_firestore.collection("Course").doc("123").set(newUser);
+_firestore.collection("Course").doc("123").update({
+   "id" : 30,
+ });
+  _firestore.collection("Course").doc("123").delete();
