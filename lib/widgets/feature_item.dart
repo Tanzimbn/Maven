@@ -41,9 +41,9 @@ class FeatureItem extends StatelessWidget {
         child: Stack(
           children: [
             Hero(
-              tag: data["id"].toString() + data["image"] ,
+              tag: data["id"],
               child: CustomImage(
-                data["image"],
+                data["img"],
                 width: double.infinity,
                 height: 190,
                 radius: 15,
@@ -72,7 +72,7 @@ class FeatureItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            data["name"],
+            data["title"],
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -106,7 +106,7 @@ class FeatureItem extends StatelessWidget {
         ],
       ),
       child: Text(
-        data["price"],
+        "BDT ${data["payment"]}",
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.w500,
@@ -122,15 +122,15 @@ class FeatureItem extends StatelessWidget {
         _getAttribute(
           Icons.play_circle_outlined,
           AppColor.labelColor,
-          data["session"],
+          "${data["videos"].length} videos",
         ),
         const SizedBox(
           width: 12,
         ),
         _getAttribute(
-          Icons.schedule_rounded,
+          Icons.quiz_outlined,
           AppColor.labelColor,
-          data["duration"],
+          "${data["quizzes"].length} quiz",
         ),
         const SizedBox(
           width: 12,
@@ -138,7 +138,7 @@ class FeatureItem extends StatelessWidget {
         _getAttribute(
           Icons.star,
           AppColor.yellow,
-          data["review"],
+          data["rating"].toString(),
         ),
       ],
     );

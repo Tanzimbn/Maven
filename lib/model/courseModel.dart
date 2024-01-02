@@ -1,12 +1,10 @@
-
-
 import 'package:flutter_application_1/model/quizModel.dart';
 import 'package:flutter_application_1/model/videoModel.dart';
 
 class courseModel {
   String? id, title, description, category, instructor, img;
   String? payment;
-  double? rating, rating_count;
+  num? rating, rating_count;
   List<videoModel>? videos;
   List<quizModel>? quizzes;
 
@@ -26,24 +24,28 @@ class courseModel {
 
   toJSON() {
     List videoJson = [], quizJson = [];
-    for (var i = 0; i < videos!.length; i++) {
-      videoJson.add(videos?[i].toJSON());
+    if (videos?.length != null) {
+      for (var i = 0; i < videos!.length; i++) {
+        videoJson.add(videos?[i].toJSON());
+      }
     }
-    for (var i = 0; i < quizzes!.length; i++) {
-      quizJson.add(quizzes?[i].toJSON());
+    if(quizzes?.length != null) {
+      for (var i = 0; i < quizzes!.length; i++) {
+        quizJson.add(quizzes?[i].toJSON());
+      }
     }
     return {
-      'id' : id,
-      'title' : title,
-      'description' : description,
-      'img' : img,
-      'category' : category,
-      'instructor' : instructor,
-      'payment' : payment,
-      'rating' : rating,
-      'rating_count' : rating_count,
-      'videos' : videoJson,
-      'quizzes' : quizJson,
+      'id': id,
+      'title': title,
+      'description': description,
+      'img': img,
+      'category': category,
+      'instructor': instructor,
+      'payment': payment,
+      'rating': rating,
+      'rating_count': rating_count,
+      'videos': videoJson,
+      'quizzes': quizJson,
     };
   }
 
@@ -57,22 +59,23 @@ class courseModel {
     payment = map['payment'];
     rating = map['rating'];
     rating_count = map['rating_count'];
-    videos?.add(videoModel.fromJson(map['videos'])); 
-    quizzes?.add(quizModel.fromJson(map['quizzes'])); 
+    videos?.add(videoModel.fromJson(map['videos']));
+    quizzes?.add(quizModel.fromJson(map['quizzes']));
   }
-
 }
 
 class courseBasicModel {
-  String? course_id, title, img;
+  String? course_id, title, img, category, payment;
   double? rating;
 
   toJSON() {
     return {
-      'course_id' : course_id,
-      'title' : title,
-      'img' : img,
-      'rating' : rating,
+      'course_id': course_id,
+      'title': title,
+      'img': img,
+      'rating': rating,
+      'category': category,
+      'payment': payment,
     };
   }
 
@@ -81,6 +84,7 @@ class courseBasicModel {
     course_id = map['course_id'];
     img = map['img'];
     rating = map['rating'];
+    category = map['category'];
+    payment = map['payment'];
   }
-
 }

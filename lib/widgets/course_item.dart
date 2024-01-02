@@ -37,13 +37,13 @@ class CourseItem extends StatelessWidget {
                                 image: imageProvider, fit: BoxFit.cover),
                           ),
                         )),
-                    imageUrl: data["image"],
+                    imageUrl: data["img"],
                   ),
                 ),
                 Positioned(
                   top: 175,
                   right: 15,
-                  child: BookmarkBox(onTap: onBookmark, isBookmarked: data["is_favorited"],)
+                  child: BookmarkBox(onTap: onBookmark, isBookmarked: false,)
                 ),
                 Positioned(
                     top: 215,
@@ -53,7 +53,7 @@ class CourseItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            data["name"],
+                            data["title"],
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w500),
                           ),
@@ -64,12 +64,12 @@ class CourseItem extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               getAttribute(Icons.sell_outlined,
-                                  data["price"], AppColor.labelColor),
+                                  "BDT ${data["payment"]}", AppColor.labelColor),
                               getAttribute(Icons.play_circle_outline,
-                                  data["session"], AppColor.labelColor),
-                              getAttribute(Icons.schedule_outlined,
-                                  data["duration"], AppColor.labelColor),
-                              getAttribute(Icons.star, data["review"].toString(),
+                                  "${data["videos"].length} videos", AppColor.labelColor),
+                              getAttribute(Icons.quiz_outlined,
+                                  "${data["quizzes"].length} quiz", AppColor.labelColor),
+                              getAttribute(Icons.star, data["rating"].toString(),
                                   Colors.yellow),
                             ],
                           )

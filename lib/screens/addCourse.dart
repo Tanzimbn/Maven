@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
@@ -12,6 +12,7 @@ import 'package:flutter_application_1/model/categoryModel.dart';
 import 'package:flutter_application_1/model/courseModel.dart';
 import 'package:flutter_application_1/model/quizModel.dart';
 import 'package:flutter_application_1/model/videoModel.dart';
+import 'package:flutter_application_1/screens/root_app.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/CustomTextField.dart';
@@ -20,7 +21,7 @@ import 'package:flutter_application_1/widgets/button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CreateCourse extends StatefulWidget {
@@ -52,6 +53,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
   bool profilePictureUploaded = false;
   XFile? profilePicture;
   String userPhotoUrl = "null";
+  bool isloading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -254,16 +256,25 @@ class _CreateCoursePageState extends State<CreateCourse> {
                                   onTap: () {
                                     setState(() {
                                       if(resources[index]['type'] == 'Video') {
-                                        videos.removeWhere((element) => element.title == resources[index]['title']);
+                                        int cnt = 0;
+                                        for (var i = 0; i < index; i++) {
+                                          if(resources[i]['type'] == 'Video') cnt++;
+                                        }
+                                        videos.removeAt(cnt);
+                                        // videos.removeWhere((element) => element.title == resources[index]['title']);
                                       }
                                       else {
-                                        quizzes.removeWhere((element) => element.title == resources[index]['title']);
+                                        int cnt = 0;
+                                        for (var i = 0; i < index; i++) {
+                                          if(resources[i]['type'] != 'Video') cnt++;
+                                        }
+                                        quizzes.removeAt(cnt);
+                                        // quizzes.removeWhere((element) => element.title == resources[index]['title']);
                                       }
                                       resources.removeAt(index);
 
                                     });
                                     // resources.remove(resources[index]);
-                                    print("hoise");
                                     print(resources);
                                   },
                                 ),
@@ -289,9 +300,21 @@ class _CreateCoursePageState extends State<CreateCourse> {
                       ),
                     ),
                     SizedBox(height: 16.0),
-                    ElevatedButton(
+                    isloading ? Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                      ),
+                    )
+                    : ElevatedButton(
                       onPressed: () {
+                        setState(() {
+                          isloading = true;
+                        });
                         _createCourse();
+                        setState(() {
+                          isloading = false;
+                        });
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => RootApp()));
                       },
                       child: Text('Create Course'),
                       style: ElevatedButton.styleFrom(

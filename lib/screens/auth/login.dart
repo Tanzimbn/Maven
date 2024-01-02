@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/screens/addCourse.dart';
 import 'package:flutter_application_1/screens/auth/forgotpassword.dart';
 import 'package:flutter_application_1/screens/auth/signup.dart';
@@ -6,8 +7,9 @@ import 'package:flutter_application_1/page/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/root_app.dart';
+import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -18,38 +20,53 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   String email = "", password = "";
+  var _courseController = Get.put(courseController());
+  bool _loading = false;
 
-  final _formkey= GlobalKey<FormState>();
+  final _formkey = GlobalKey<FormState>();
 
   TextEditingController useremailcontroller = new TextEditingController();
   TextEditingController userpasswordcontroller = new TextEditingController();
 
   userLogin() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
       FirebaseFirestore _firestore = FirebaseFirestore.instance;
-      var username = await _firestore.collection("User").where("id", isEqualTo: userCredential.user?.uid).get();
+      var username = await _firestore
+          .collection("User")
+          .where("id", isEqualTo: userCredential.user?.uid)
+          .get();
       profile['name'] = username.docs[0].data()['name'];
       profile['email'] = username.docs[0].data()['email'];
+      print("------------singin ok --------------------");
+      await _courseController.loadAllCourse();
+      print("--------------dataload--------------------");
+      setState(() {
+        _loading = false;
+      });
       Navigator.push(context, MaterialPageRoute(builder: (context) => RootApp()));
+
     } on FirebaseAuthException catch (e) {
       print(e.code);
+      setState(() {
+        _loading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.red,
         content: Text(
           "Invalid Email or Password",
-          style: TextStyle(fontSize: 18.0, color: Color.fromARGB(255, 255, 255, 255)),
+          style: TextStyle(
+              fontSize: 18.0, color: Color.fromARGB(255, 255, 255, 255)),
         ),
-          
       ));
-      
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: AppColor.appBgColor,
       body: SingleChildScrollView(
         child: Container(
           child: Form(
@@ -58,8 +75,8 @@ class _LogInState extends State<LogIn> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                        height: 50.0,
-                      ),
+                  height: 50.0,
+                ),
                 Center(
                   child: Image.asset(
                     "assets/images/1.png",
@@ -73,10 +90,10 @@ class _LogInState extends State<LogIn> {
                     child: Text(
                       "Welcome back!",
                       style: TextStyle(
-                          color: const Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
-                          ),
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -90,17 +107,17 @@ class _LogInState extends State<LogIn> {
                       color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.circular(10)),
                   child: TextFormField(
-                    controller:  useremailcontroller,
+                    controller: useremailcontroller,
                     keyboardType: TextInputType.emailAddress,
-                    validator: (value){
-                      if(value==null|| value.isEmpty){
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
                         return '  Please Enter E-Mail';
-
                       }
                       return null;
                     },
                     decoration: InputDecoration(
-                        errorStyle: TextStyle( color: Color.fromARGB(255, 255, 2, 2)),
+                        errorStyle:
+                            TextStyle(color: Color.fromARGB(255, 255, 2, 2)),
                         border: InputBorder.none,
                         prefixIcon: Icon(
                           Icons.email_outlined,
@@ -108,7 +125,6 @@ class _LogInState extends State<LogIn> {
                         ),
                         hintText: 'Your Email',
                         hintStyle: TextStyle(color: Colors.white60)),
-                        
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -122,18 +138,17 @@ class _LogInState extends State<LogIn> {
                       color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.circular(10)),
                   child: TextFormField(
-                       controller: userpasswordcontroller,
-                    validator: (value){
-                      if(value==null|| value.isEmpty){
+                    controller: userpasswordcontroller,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
                         return '  Please Enter Password';
-
                       }
                       return null;
                     },
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         prefixIcon: Icon(
-                          Icons.password,
+                          Icons.key,
                           color: Colors.white,
                         ),
                         hintText: 'Password',
@@ -146,31 +161,43 @@ class _LogInState extends State<LogIn> {
                   height: 15.0,
                 ),
                 GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> ForgotPassword()));
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPassword()));
                   },
                   child: Container(
                     padding: EdgeInsets.only(right: 24.0),
                     alignment: Alignment.bottomRight,
                     child: Text(
                       "Forgot password?",
-                      style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: 18.0),
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          fontSize: 18.0),
                     ),
                   ),
                 ),
                 SizedBox(
                   height: 30.0,
                 ),
-                GestureDetector(
+                _loading ? Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                  ),
+                )
+                : GestureDetector(
                   onTap: () {
-                    if(_formkey.currentState!.validate()){
+                    setState(() {
+                        _loading = true;
+                    });
+                    if (_formkey.currentState!.validate()) {
                       setState(() {
-                        email= useremailcontroller.text;
-                        password= userpasswordcontroller.text;
+                        email = useremailcontroller.text;
+                        password = userpasswordcontroller.text;
                       });
                       userLogin();
                     }
-                    
                   },
                   child: Center(
                     child: Container(
@@ -178,7 +205,7 @@ class _LogInState extends State<LogIn> {
                       height: 55,
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 250, 36, 54),
+                          color: AppColor.secondary,
                           borderRadius: BorderRadius.circular(30)),
                       child: Center(
                           child: Text(
@@ -199,15 +226,19 @@ class _LogInState extends State<LogIn> {
                   children: [
                     Text(
                       "New User?",
-                      style: TextStyle(color: const Color.fromARGB(255, 21, 20, 20), fontSize: 20.0),
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 21, 20, 20),
+                          fontSize: 20.0),
                     ),
                     SizedBox(
                       width: 5.0,
                     ),
                     GestureDetector(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SignUp()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUp()));
                         },
                         child: Text(
                           " Signup",

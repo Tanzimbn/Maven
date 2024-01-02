@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/screens/course_detail.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
@@ -7,9 +8,15 @@ import 'package:flutter_application_1/widgets/category_box.dart';
 import 'package:flutter_application_1/widgets/feature_item.dart';
 import 'package:flutter_application_1/widgets/notification_box.dart';
 import 'package:flutter_application_1/widgets/recommend_item.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  var _courseController;
+
+  HomePage() {
+    _courseController = Get.find<courseController>();
+  }
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -23,10 +30,21 @@ class _HomePageState extends State<HomePage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading : false,
             backgroundColor: AppColor.appBarColor,
             pinned: true,
             snap: true,
             floating: true,
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SvgPicture.asset(
+                'assets/icons/logo_blackColor.svg',
+                color: AppColor.textColor,
+                width: 10,
+                height: 10,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
             title: _buildAppBar(),
           ),
           SliverList(
@@ -50,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                profile["name"]!,
+                "Hello, ${profile["name"]!}",
                 style: TextStyle(
                   color: AppColor.labelColor,
                   fontSize: 14,
@@ -70,9 +88,9 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        NotificationBox(
-          notifiedNumber: 10,
-        )
+        // NotificationBox(
+        //   notifiedNumber: 10,
+        // )
       ],
     );
   }
@@ -156,13 +174,13 @@ class _HomePageState extends State<HomePage> {
         viewportFraction: .75,
       ),
       items: List.generate(
-        features.length,
+        widget._courseController.allCourse.length,
         (index) => FeatureItem(
-          data: features[index],
+          data: widget._courseController.allCourse[index].toJSON(),
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    CourseDetailPage(data: {"course": features[index]})));
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) =>
+            //         CourseDetailPage(data: {"course": features[index]})));
           },
         ),
       ),
@@ -175,11 +193,12 @@ class _HomePageState extends State<HomePage> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(
-          recommends.length,
+          widget._courseController.allCourse.length,
           (index) => Padding(
             padding: const EdgeInsets.only(right: 10),
             child: RecommendItem(
-              data: recommends[index],
+              data: widget._courseController.allCourse[index].toJSON(),
+              
             ),
           ),
         ),
