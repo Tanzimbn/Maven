@@ -1,19 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/CourseController.dart';
+import 'package:flutter_application_1/model/courseModel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_1/screens/course_detail.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/category_item.dart';
 import 'package:flutter_application_1/widgets/course_item.dart';
+import 'package:get/get.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class ExplorePage extends StatefulWidget {
-  const ExplorePage({Key? key}) : super(key: key);
+  var _courseController;
+
+  ExplorePage({Key? key}) : super(key: key) {
+    _courseController = Get.find<courseController>();
+  }
 
   @override
   State<ExplorePage> createState() => _ExplorePageState();
 }
 
 class _ExplorePageState extends State<ExplorePage> {
+
+  List<courseModel> updatedList = [], allList = [];
+  TextEditingController searchValue = TextEditingController();
+  String categoryValue = 'All';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    allList = List.from(widget._courseController.allCourse);
+    updatedList = allList;
+  }
+  void updateList() {
+    // update list of courses
+    if(categoryValue == 'All') {
+      updatedList = List.from(allList.where((element) => element.toJSON()['title'].toLowerCase().contains(searchValue.text.toLowerCase())));
+    }
+    else {
+      updatedList = List.from(allList.where(
+        (element) => 
+        element.toJSON()['title'].toLowerCase().contains(searchValue.text.toLowerCase())
+        && element.toJSON()['category'] == categoryValue
+      ));
+    }
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,14 +105,21 @@ class _ExplorePageState extends State<ExplorePage> {
                         offset: Offset(0, 0))
                   ]),
               child: TextField(
+                controller: searchValue,
                 decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.search,
                       color: Colors.grey,
                     ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 1),
                     border: InputBorder.none,
                     hintText: "Search",
                     hintStyle: TextStyle(color: Colors.grey, fontSize: 15)),
+                    onChanged: (value) {
+                      setState(() {
+                        updateList();
+                      });
+                    },
               ),
             ),
           ),
@@ -101,7 +142,6 @@ class _ExplorePageState extends State<ExplorePage> {
     );
   }
 
-  int selectedCategoryIndex = 0;
   getCategories() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -112,39 +152,42 @@ class _ExplorePageState extends State<ExplorePage> {
             (index) => CategoryItem(
                 onTap: () {
                   setState(() {
-                    selectedCategoryIndex = index;
+                    categoryValue = categories[index]['name'];
+                    updateList();
                   });
                 },
-                isActive: selectedCategoryIndex == index,
+                isActive: categoryValue == categories[index]['name'],
                 data: categories[index])),
       ),
     );
   }
 
   getCourses() {
+
     return SliverChildBuilderDelegate(
       (context, index) {
         return Padding(
           padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      CourseDetailPage(data: {"course": features[index]})));
+              print(updatedList.length);
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (context) =>
+              //         CourseDetailPage(data: {"course": features[index]})));
             },
             child: CourseItem(
-              data: courses[index],
+              data: updatedList[index].toJSON(),
               onBookmark: () {
                 setState(() {
-                  courses[index]["is_favorited"] =
-                      !courses[index]["is_favorited"];
+                  // courses[index]["is_favorited"] =
+                  //     !courses[index]["is_favorited"];
                 });
               },
             ),
           ),
         );
       },
-      childCount: courses.length,
+      childCount: updatedList.length,
     );
   }
 }

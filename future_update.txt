@@ -1,8 +1,10 @@
+Change Signup, signin page email, password textcontroller
 Signup required
 Add loading on button click - https://www.youtube.com/watch?v=O5fQplbVADI&list=PLFyjjoCMAPtxS6Cx1XSjCfxOxHQ4_e0sL&index=9
 Logout
 login with phone number
 Course total video length
+Category save in database, admin control of it from admin page
 
 
 // Column(

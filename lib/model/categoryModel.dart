@@ -3,10 +3,15 @@ import 'package:flutter_application_1/model/courseModel.dart';
 
 var categoryItem = [
   'Coding',
-  'Money Management',
-  'Cooking',
+  'Education',
+  'Design',
   'Electronics',
-  'Finance'
+  'Finance',
+  'Art',
+  'Music',
+  'Cooking',
+  'Business',
+  'Other',
 ];
 
 class categoryModel {

@@ -41,6 +41,14 @@ List categories = [
     "name" : "Finance",
     "icon" : "assets/icons/categories/finance.svg"
   },
+  {
+    "name" : "Electronics",
+    "icon" : "assets/icons/categories/electronics.svg"
+  },
+  {
+    "name" : "Other",
+    "icon" : "assets/icons/categories/other.svg"
+  }
 ];
 
 List courses = [
@@ -149,7 +157,7 @@ List features = [
   {
     "id" : 100,
     "name" : "UI/UX Design",
-    "image" : "https://images.unsplash.com/photo-1596638787647-904d822d751e?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTF8fGZhc2hpb258ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
+    "image" : "https://firebasestorage.googleapis.com/v0/b/login-signup-94458.appspot.com/o/CourseImg%2F2023-12-31%2014%3A20%3A34.823688_123.jpg?alt=media&token=b798611d-d81c-4970-ad35-336187a9b05a",
     "price" : "\$110.00",
     "discount" : "\$99.00",
     "duration" : "10 hours",

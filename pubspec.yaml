@@ -54,7 +54,7 @@ dependencies:
   image_picker: ^1.0.5
   velocity_x: ^4.1.2
   dropdown_search: ^5.0.6
-  shared_preferences: ^2.2.2
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:
