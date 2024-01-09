@@ -3,10 +3,10 @@ import 'package:flutter_application_1/model/videoModel.dart';
 
 class courseModel {
   String? id, title, description, category, instructor, img;
-  String? payment;
+  num? payment;
   num? rating, rating_count;
-  List<videoModel>? videos;
-  List<quizModel>? quizzes;
+  List<videoModel> videos = [];
+  List<quizModel> quizzes = [];
 
   courseModel({
     required this.id,
@@ -24,15 +24,11 @@ class courseModel {
 
   toJSON() {
     List videoJson = [], quizJson = [];
-    if (videos?.length != null) {
-      for (var i = 0; i < videos!.length; i++) {
-        videoJson.add(videos?[i].toJSON());
-      }
+    for (var i = 0; i < videos.length; i++) {
+      videoJson.add(videos[i].toJSON());
     }
-    if(quizzes?.length != null) {
-      for (var i = 0; i < quizzes!.length; i++) {
-        quizJson.add(quizzes?[i].toJSON());
-      }
+    for (var i = 0; i < quizzes.length; i++) {
+      quizJson.add(quizzes[i].toJSON());
     }
     return {
       'id': id,
@@ -59,8 +55,13 @@ class courseModel {
     payment = map['payment'];
     rating = map['rating'];
     rating_count = map['rating_count'];
-    videos?.add(videoModel.fromJson(map['videos']));
-    quizzes?.add(quizModel.fromJson(map['quizzes']));
+    for(int i = 0; i < map['videos'].length; i++) {
+      videos.add(videoModel.fromJson(map['videos'][i]));
+    }
+    for(int i = 0; i < map['quizzes'].length; i++) {
+      quizzes.add(quizModel.fromJson(map['quizzes'][i]));
+    }
+    // quizzes.add(quizModel.fromJson(map['quizzes'] as Map<dynamic, dynamic>));
   }
 }
 

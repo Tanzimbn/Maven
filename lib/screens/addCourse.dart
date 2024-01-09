@@ -639,13 +639,13 @@ class _CreateCoursePageState extends State<CreateCourse> {
       title: titleController.text,
       description: descriptionController.text,
       category: categoryController,
-      payment: paymentController.text,
+      payment: paymentController.text as num,
       rating: 0,
       rating_count : 0,
       videos: videos,
       quizzes: quizzes,
       img: url,
-      instructor: profile['name'],
+      instructor: profile['name'].toString(),
     );
     print(course.toJSON());
     print("Course upload successfully!");

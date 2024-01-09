@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/screens/addCourse.dart';
 import 'package:flutter_application_1/page/home_page.dart';
 import 'package:flutter_application_1/screens/auth/login.dart';
+import 'package:flutter_application_1/screens/quiz.dart';
 import 'firebase_options.dart';
 import 'package:flutter_application_1/screens/welcome_page.dart';
 

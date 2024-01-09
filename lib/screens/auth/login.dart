@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/controllers/CourseController.dart';
+import 'package:flutter_application_1/controllers/enrolledController.dart';
 import 'package:flutter_application_1/screens/addCourse.dart';
 import 'package:flutter_application_1/screens/auth/forgotpassword.dart';
 import 'package:flutter_application_1/screens/auth/signup.dart';
@@ -19,8 +20,9 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  String email = "", password = "";
+  String email = "tanzimbinnasir@gmail.com", password = "tanzim10";
   var _courseController = Get.put(courseController());
+  var _enrollController = Get.put(enrolledController());
   bool _loading = false;
 
   final _formkey = GlobalKey<FormState>();
@@ -39,8 +41,12 @@ class _LogInState extends State<LogIn> {
           .get();
       profile['name'] = username.docs[0].data()['name'];
       profile['email'] = username.docs[0].data()['email'];
+      profile['img'] = username.docs[0].data()['img'];
+      profile['point'] = username.docs[0].data()['point'];
+      profile['money'] = username.docs[0].data()['money'];
       print("------------singin ok --------------------");
       await _courseController.loadAllCourse();
+      await _enrollController.loadAllCourse(userCredential.user!.uid);
       print("--------------dataload--------------------");
       setState(() {
         _loading = false;
@@ -191,13 +197,13 @@ class _LogInState extends State<LogIn> {
                     setState(() {
                         _loading = true;
                     });
-                    if (_formkey.currentState!.validate()) {
+                    // if (_formkey.currentState!.validate()) {
                       setState(() {
-                        email = useremailcontroller.text;
-                        password = userpasswordcontroller.text;
+                        // email = useremailcontroller.text;
+                        // password = userpasswordcontroller.text;
                       });
                       userLogin();
-                    }
+                    // }
                   },
                   child: Center(
                     child: Container(

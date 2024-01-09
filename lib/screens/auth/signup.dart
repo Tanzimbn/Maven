@@ -65,7 +65,7 @@ class _SignUpState extends State<SignUp> {
   _adduser(String uid) async {
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
     String url = profilePictureUploaded ? await StoreData().uploadUserPhoto(profilePicture!.path, uid) : "";
-    userModel user = userModel(id: uid, name: namecontroller.text, email: mailcontroller.text, img: url, point: 0);
+    userModel user = userModel(id: uid, name: namecontroller.text, email: mailcontroller.text, img: url, point: 0, money: 0);
     _firestore.collection("User").doc().set(user.toJSON());
   }
   

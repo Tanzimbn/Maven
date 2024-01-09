@@ -178,9 +178,9 @@ class _HomePageState extends State<HomePage> {
         (index) => FeatureItem(
           data: widget._courseController.allCourse[index].toJSON(),
           onTap: () {
-            // Navigator.of(context).push(MaterialPageRoute(
-            //     builder: (context) =>
-            //         CourseDetailPage(data: {"course": features[index]})));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    CourseDetailPage(data: {"course": widget._courseController.allCourse[index].toJSON()})));
           },
         ),
       ),
@@ -198,7 +198,12 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(right: 10),
             child: RecommendItem(
               data: widget._courseController.allCourse[index].toJSON(),
-              
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      CourseDetailPage(data: {"course": widget._courseController.allCourse[index].toJSON()})
+                ));
+              },
             ),
           ),
         ),

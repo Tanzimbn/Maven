@@ -170,10 +170,9 @@ class _ExplorePageState extends State<ExplorePage> {
           padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
           child: GestureDetector(
             onTap: () {
-              print(updatedList.length);
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) =>
-              //         CourseDetailPage(data: {"course": features[index]})));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      CourseDetailPage(data: {"course": updatedList[index].toJSON()})));
             },
             child: CourseItem(
               data: updatedList[index].toJSON(),

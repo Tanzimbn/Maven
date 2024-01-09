@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/enrolledController.dart';
+import 'package:flutter_application_1/model/enrollModel.dart';
+import 'package:flutter_application_1/screens/enroll_course.dart';
+import 'package:flutter_application_1/screens/my_course.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/custom_image.dart';
 import 'package:flutter_application_1/widgets/setting_box.dart';
 import 'package:flutter_application_1/widgets/setting_item.dart';
+import 'package:get/get.dart';
 
 class AccountPage extends StatefulWidget {
-  const AccountPage({Key? key}) : super(key: key);
+
+  var _enrollController;
+  AccountPage({Key? key}) : super(key: key){
+    _enrollController = Get.find<enrolledController>();
+  }
 
   @override
   _AccountPageState createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
+
+  List<enrollModel> _enrollCourse = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _enrollCourse = List.from(widget._enrollController.allCourse);
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -66,7 +84,6 @@ class _AccountPageState extends State<AccountPage> {
           const SizedBox(
             height: 20,
           ),
-          _buildSection3(),
         ],
       ),
     );
@@ -76,7 +93,7 @@ class _AccountPageState extends State<AccountPage> {
     return Column(
       children: [
         CustomImage(
-          profile["image"]!,
+          profile["img"].toString(),
           width: 70,
           height: 70,
           radius: 20,
@@ -85,7 +102,7 @@ class _AccountPageState extends State<AccountPage> {
           height: 10,
         ),
         Text(
-          profile["name"]!,
+          profile["name"].toString(),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
@@ -101,8 +118,18 @@ class _AccountPageState extends State<AccountPage> {
       children: [
         Expanded(
           child: SettingBox(
-            title: "12 courses",
-            icon: "assets/icons/work.svg",
+            title: "Courses",
+            icon: "assets/icons/enroll.svg",
+            color: AppColor.sky,
+            isButton: true,
+            onTap : () {
+              setState(() {
+                Get.find<enrolledController>().allCourse.length;
+              });
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      enrollCourse()));
+            }
           ),
         ),
         const SizedBox(
@@ -110,8 +137,16 @@ class _AccountPageState extends State<AccountPage> {
         ),
         Expanded(
           child: SettingBox(
-            title: "55 hours",
-            icon: "assets/icons/time.svg",
+            title: "Check coins",
+            icon: "assets/icons/coin.svg",
+            isButton: true,
+            onTap: () {
+              setState(() {
+                profile['point'];
+              });
+              _showError(context, "Total coins ", "${profile['point']}");
+              profile['point'] = 100;
+            },
           ),
         ),
         const SizedBox(
@@ -119,8 +154,15 @@ class _AccountPageState extends State<AccountPage> {
         ),
         Expanded(
           child: SettingBox(
-            title: "4.8",
-            icon: "assets/icons/star.svg",
+            title: "Check balance",
+            icon: "assets/icons/money.svg",
+            isButton: true,
+            onTap: () {
+              setState(() {
+                profile['money'];
+              });
+              _showError(context, "Total balance ", "${profile['money']} BDT");
+            },
           ),
         ),
       ],
@@ -145,8 +187,8 @@ class _AccountPageState extends State<AccountPage> {
       child: Column(
         children: [
           SettingItem(
-            title: "Setting",
-            leadingIcon: "assets/icons/setting.svg",
+            title: "Edit profile",
+            leadingIcon: "assets/icons/edit.svg",
             bgIconColor: AppColor.blue,
           ),
           Padding(
@@ -157,9 +199,14 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           SettingItem(
-            title: "Payment",
-            leadingIcon: "assets/icons/wallet.svg",
+            title: "Your Courses",
+            leadingIcon: "assets/icons/container.svg",
             bgIconColor: AppColor.green,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      myCourse()));
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(left: 45),
@@ -196,8 +243,8 @@ class _AccountPageState extends State<AccountPage> {
       child: Column(
         children: [
           SettingItem(
-            title: "Notification",
-            leadingIcon: "assets/icons/bell.svg",
+            title: "Payment",
+            leadingIcon: "assets/icons/wallet.svg",
             bgIconColor: AppColor.purple,
           ),
           Padding(
@@ -208,35 +255,80 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           SettingItem(
-            title: "Privacy",
-            leadingIcon: "assets/icons/shield.svg",
-            bgIconColor: AppColor.orange,
+            title: "Help Center",
+            leadingIcon: "assets/icons/help.svg",
+            bgIconColor: AppColor.yellow,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 45),
+            child: Divider(
+              height: 0,
+              color: Colors.grey.withOpacity(0.8),
+            ),
+          ),
+          SettingItem(
+            title: "Log Out",
+            leadingIcon: "assets/icons/logout.svg",
+            bgIconColor: AppColor.darker,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSection3() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: AppColor.cardColor,
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.shadowColor.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 1,
-            offset: Offset(0, 1), // changes position of shadow
+  // Widget _buildSection3() {
+  //   return Container(
+  //     padding: const EdgeInsets.symmetric(horizontal: 15),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(5),
+  //       color: AppColor.cardColor,
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: AppColor.shadowColor.withOpacity(0.1),
+  //           spreadRadius: 1,
+  //           blurRadius: 1,
+  //           offset: Offset(0, 1), // changes position of shadow
+  //         ),
+  //       ],
+  //     ),
+  //     child: SettingItem(
+  //       title: "Log Out",
+  //       leadingIcon: "assets/icons/logout.svg",
+  //       bgIconColor: AppColor.darker,
+  //     ),
+  //   );
+  // }
+
+  Future<void> _showError(BuildContext context, String title, String mess) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: AppColor.textColor,
           ),
-        ],
-      ),
-      child: SettingItem(
-        title: "Log Out",
-        leadingIcon: "assets/icons/logout.svg",
-        bgIconColor: AppColor.darker,
-      ),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          content: Text(mess, style: TextStyle(
+            fontWeight:FontWeight.bold
+          ),),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Ok'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.green,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
+
 }
