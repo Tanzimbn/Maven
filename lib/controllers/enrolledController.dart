@@ -20,7 +20,6 @@ class enrolledController extends GetxController {
         allCourse.add(enrollModel.fromJson(value));
       }
     }
-    print(allCourse[0].video_seen.length);
   }
 
   Future<bool> updateInfo(String uid, String courseId, num value) async {

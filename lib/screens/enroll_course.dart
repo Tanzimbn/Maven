@@ -3,6 +3,7 @@ import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/controllers/enrolledController.dart';
 import 'package:flutter_application_1/model/courseModel.dart';
 import 'package:flutter_application_1/model/enrollModel.dart';
+import 'package:flutter_application_1/screens/course_detail.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/course_item.dart';
@@ -65,13 +66,11 @@ class _enrollCourse extends State<enrollCourse> {
   AppBar buildAppbar() {
     return AppBar(
       backgroundColor: Colors.white,
-      title: Padding(
-        padding: EdgeInsets.only(left: 100),
-        child: Text(
+      centerTitle: true,
+      title: Text(
           "Enrolled Courses",
-          style: TextStyle(color: AppColor.textColor),
+          style: TextStyle(color: AppColor.textColor, fontFamily: 'Oswald'),
         ),
-      ),
       iconTheme: IconThemeData(color: AppColor.textColor),
       leading: IconButton(
         icon: Icon(
@@ -92,10 +91,10 @@ class _enrollCourse extends State<enrollCourse> {
           padding: const EdgeInsets.only(top: 15, left: 35, right: 35, bottom: 10),
           child: GestureDetector(
             onTap: () {
-              print(enrollCourses.length);
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) =>
-              //         CourseDetailPage(data: {"course": features[index]})));
+              // print(enrollCourses.length);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      CourseDetailPage(data: {"course": enrollCourses[index].toJSON()})));
             },
             child: CourseItem(
               data: enrollCourses[index].toJSON(),

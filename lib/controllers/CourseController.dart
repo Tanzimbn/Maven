@@ -8,6 +8,7 @@ class courseController extends GetxController {
   List<courseModel> allCourse = [];
 
   loadAllCourse() async {
+    // print("start");
     allCourse.clear();
     CollectionReference _collection = FirebaseFirestore.instance.collection('Course');
     QuerySnapshot querySnap = await _collection.get();
@@ -16,7 +17,7 @@ class courseController extends GetxController {
       Map<dynamic, dynamic> value = docSnap.data() as Map<dynamic, dynamic>;
       allCourse.add(courseModel.fromJson(value));
     }
-
+    // print("end");
     
   }
 }

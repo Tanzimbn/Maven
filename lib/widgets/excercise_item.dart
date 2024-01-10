@@ -79,8 +79,7 @@ class excerciseItem extends StatelessWidget {
           ongoing ?
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
-                
+              Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (context) =>
                       QuizPage(data: data)));
             },

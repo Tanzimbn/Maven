@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/enrolledController.dart';
+import 'package:flutter_application_1/controllers/noticationController.dart';
 import 'package:flutter_application_1/model/courseModel.dart';
 import 'package:flutter_application_1/model/enrollModel.dart';
 import 'package:flutter_application_1/screens/root_app.dart';
@@ -53,15 +54,11 @@ class _CourseDetailPageState extends State<CourseDetailPage>
   AppBar buildAppbar() {
     return AppBar(
       backgroundColor: Colors.white,
-      title: Padding(
-        padding: EdgeInsets.only(left: 0),
-        child: Center(
-          child: Text(
+      centerTitle: true,
+      title: Text(
             "Detail",
-            style: TextStyle(color: AppColor.textColor),
+            style: TextStyle(color: AppColor.textColor, fontFamily: 'Oswald'),
           ),
-        ),
-      ),
       iconTheme: IconThemeData(color: AppColor.textColor),
       leading: IconButton(
         icon: Icon(
@@ -146,13 +143,13 @@ class _CourseDetailPageState extends State<CourseDetailPage>
               enrolled: _enrollCourse.length != 0,
               complete: _enrollCourse.length == 0 ? false : index < _enrollCourse[0].video_seen.length,
               ongoing: _enrollCourse.length == 0 ? false : index == _enrollCourse[0].video_seen.length,
-              onVideoComplete: (isComplete) {
-                        setState(() {
-                          if(isComplete) {
-                            index;
-                          }
-                        });
-              },
+              // onVideoComplete: (isComplete) {
+                        // setState(() {
+                        //   // if(isComplete) {
+                        //   //   index;
+                        //   // }
+                        // });
+              // },
             ));
   }
 
@@ -324,6 +321,11 @@ class _CourseDetailPageState extends State<CourseDetailPage>
             if(currentBalance >= courseData["payment"]) {
               if(await update(currentBalance - courseData["payment"])) {}
               print("Payment done!");
+              await Get.find<notificationController>().addNotification(
+                  FirebaseAuth.instance.currentUser!.uid, 
+                  "New course enrolled", 
+                  "You have successfully enrolled ${widget.data['course']['title']}", 
+                  false);
               setState(() {
                 paymentOngoing = false;
                 List<enrollModel> allcouse = List.from(Get.find<enrolledController>().allCourse);
@@ -353,12 +355,12 @@ class _CourseDetailPageState extends State<CourseDetailPage>
                   borderRadius: BorderRadius.circular(10.0)))),
           child: Text(
             "Buy Now",
-            style: TextStyle(),
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ])
       // For user who already enrolled this course
-      : Row(crossAxisAlignment: CrossAxisAlignment.center, children:[
+      : Column(crossAxisAlignment: CrossAxisAlignment.center, children:[
           // Expanded(
           //   child: Text(
           //     "Press Complete to end the course!"
@@ -368,6 +370,7 @@ class _CourseDetailPageState extends State<CourseDetailPage>
           //   child:
           //       Container(), // This is an empty container to fill the available space
           // ),
+          SizedBox(height: 10,),
           paymentOngoing ?
           Center(
             child: CircularProgressIndicator(
@@ -381,6 +384,11 @@ class _CourseDetailPageState extends State<CourseDetailPage>
               // check all quiz done and video watched
               if(_enrollCourse[0].quiz_complete.length == courseData['quizzes'].length && _enrollCourse[0].video_seen.length == courseData['videos'].length) {
                 if(await completeUpdate()) {
+                  await Get.find<notificationController>().addNotification(
+                  FirebaseAuth.instance.currentUser!.uid, 
+                  "Course Completed", 
+                  "You have successfully completed ${widget.data['course']['title']}", 
+                  false);
                   Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context) =>
                             RootApp()),
@@ -401,7 +409,7 @@ class _CourseDetailPageState extends State<CourseDetailPage>
                     borderRadius: BorderRadius.circular(10.0)))),
             child: Text(
               "Complete",
-              style: TextStyle(),
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ]),

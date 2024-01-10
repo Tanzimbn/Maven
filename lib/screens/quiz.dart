@@ -32,119 +32,154 @@ class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.primary,
       appBar: buildAppbar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 0, 0, 0),
-                borderRadius:BorderRadius.circular(10),
+      body: Container(
+        // borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(50),
+              topRight: Radius.circular(50),
+            ),
+            color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 25.0, 16.0, 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                "Question :",
+                style: TextStyle(
+                  color: AppColor.secondary,
+                ),
               ),
-              child: Row(
+              SizedBox(height: 5,),
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 214, 211, 211),
+                  borderRadius:BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    // Icon(Icons.question_mark, color: AppColor.primary,),
+                    Expanded(
+                      child: Text(
+                        question,
+                        style: TextStyle(fontSize: 18, color: const Color.fromARGB(255, 0, 0, 0)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                "Options :",
+                style: TextStyle(
+                  color: AppColor.secondary,
+                ),
+              ),
+              SizedBox(height: 5,),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: options.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedOption = index;
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: selectedOption == index
+                              ? const Color.fromARGB(255, 250, 249, 249)
+                              : AppColor.primary,
+                        ),
+                        child: Expanded(
+                          child: Text(
+                            options[index],
+                            style: TextStyle(
+                              color: selectedOption == index
+                                  ? Colors.black
+                                  : Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+              submitted ?
+              Center(
+                child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                ),
+              )
+              : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Icon(Icons.question_mark, color: AppColor.primary,),
-                  Expanded(
-                    child: Text(
-                      question,
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                  ElevatedButton(
+                    onPressed: () async {
+                      // Handle submit button click
+                      setState(() {
+                        submitted = true;
+                      });
+                      print(selectedOption);
+                      if((selectedOption + 1).toString() == answer) {
+                        await updateProfile(FirebaseAuth.instance.currentUser!.uid, point);
+                        await _showMessage(context, "Congratulations! you get ${point} coin${point > 1? 's':''}", false, "Correct answer!");
+                        await Get.find<enrolledController>().updateResource(FirebaseAuth.instance.currentUser!.uid, widget.data['course']['id'], false);
+                      //  Navigator.of(context).pop();
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) =>
+                              CourseDetailPage(data: {"course": widget.data['course']})),
+                        );  
+                      }
+                      else {
+                        await _showMessage(context, "Wrong answer", true, "Oops!");
+                      }
+                      setState(() {
+                        submitted = false;
+                      });
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(AppColor.primary),
+                      minimumSize: MaterialStateProperty.all(Size(150, 40)),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)))),
+                    child: Text('Submit',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle cancel button click
+                    },
+                    style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(AppColor.primary),
+                    minimumSize: MaterialStateProperty.all(Size(150, 40)),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)))),
+                    child: Text('Cancel',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: options.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedOption = index;
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10),
-                        color: selectedOption == index
-                            ? Colors.black
-                            : AppColor.primary,
-                      ),
-                      child: Text(
-                        options[index],
-                        style: TextStyle(
-                          color: selectedOption == index
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 20),
-            submitted ?
-            Center(
-              child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(AppColor.primary),
-              ),
-            )
-            : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    // Handle submit button click
-                    setState(() {
-                      submitted = true;
-                    });
-                    print(selectedOption);
-                    if((selectedOption + 1).toString() == answer) {
-                      await updateProfile(FirebaseAuth.instance.currentUser!.uid, point);
-                      await _showMessage(context, "Congratulations! you get ${point} coin${point > 1? 's':''}", false, "Correct answer!");
-                      await Get.find<enrolledController>().updateResource(FirebaseAuth.instance.currentUser!.uid, widget.data['course']['id'], false);
-                    //  Navigator.of(context).pop();
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) =>
-                            CourseDetailPage(data: {"course": widget.data['course']})),
-                      );  
-                    }
-                    else {
-                      await _showMessage(context, "Wrong answer", true, "Oops!");
-                    }
-                    setState(() {
-                      submitted = false;
-                    });
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(AppColor.primary),
-                    minimumSize: MaterialStateProperty.all(Size(150, 40)),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)))),
-                  child: Text('Submit'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle cancel button click
-                  },
-                  style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(AppColor.primary),
-                  minimumSize: MaterialStateProperty.all(Size(150, 40)),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)))),
-                  child: Text('Cancel'),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -152,23 +187,24 @@ class _QuizPageState extends State<QuizPage> {
 
   AppBar buildAppbar() {
     return AppBar(
-      backgroundColor: Colors.white,
-      title: Padding(
-        padding: EdgeInsets.only(left: 0),
-        child: Center(
-          child: Text(
+      backgroundColor: AppColor.primary,
+      toolbarHeight: 100,
+      centerTitle: true,
+      title: Text(
             "Quiz",
-            style: TextStyle(color: AppColor.textColor),
-          ),
-        ),
+            style: TextStyle(color: AppColor.appBgColor),
       ),
-      iconTheme: IconThemeData(color: AppColor.textColor),
+      iconTheme: IconThemeData(color: AppColor.appBgColor),
       leading: IconButton(
         icon: Icon(
           Icons.arrow_back_ios,
         ),
         onPressed: () {
-          Navigator.pop(context);
+          // Navigator.pop(context);
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) =>
+              CourseDetailPage(data: {"course": widget.data['course']})),
+          );  
         },
       ),
     );
@@ -193,7 +229,11 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Ok'),
+              child: Text('Ok',
+                style: TextStyle(
+                        color: Colors.white,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _error ? AppColor.red : AppColor.green,
               ),

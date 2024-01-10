@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/enrolledController.dart';
+import 'package:flutter_application_1/firebase/AuthenticationService.dart';
 import 'package:flutter_application_1/model/enrollModel.dart';
+import 'package:flutter_application_1/screens/auth/login.dart';
 import 'package:flutter_application_1/screens/enroll_course.dart';
 import 'package:flutter_application_1/screens/my_course.dart';
 import 'package:flutter_application_1/theme/color.dart';
@@ -8,7 +11,9 @@ import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/custom_image.dart';
 import 'package:flutter_application_1/widgets/setting_box.dart';
 import 'package:flutter_application_1/widgets/setting_item.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class AccountPage extends StatefulWidget {
 
@@ -22,7 +27,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-
+  // late final FirebaseAuth _firebaseauth;
   List<enrollModel> _enrollCourse = [];
   @override
   void initState() {
@@ -36,12 +41,29 @@ class _AccountPageState extends State<AccountPage> {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-          backgroundColor: AppColor.appBgColor,
-          pinned: true,
-          snap: true,
-          floating: true,
-          title: _buildHeader(),
-        ),
+            backgroundColor: AppColor.appBgColor,
+            pinned: true,
+            centerTitle: true,
+            title: Text(
+              "My Profile",
+              style: TextStyle(
+                color: AppColor.textColor,
+                // fontWeight: FontWeight.w600,
+                fontSize: 24,
+                fontFamily: 'Oswald',
+              ),
+            ),
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SvgPicture.asset(
+                'assets/icons/logo_blackColor.svg',
+                // color: AppColor.textColor,
+                width: 10,
+                height: 10,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+          ),
         SliverToBoxAdapter(child: _buildBody())
       ],
     );
@@ -57,6 +79,7 @@ class _AccountPageState extends State<AccountPage> {
             color: AppColor.textColor,
             fontSize: 24,
             fontWeight: FontWeight.w600,
+            fontFamily: 'Oswald',
           ),
         ),
       ],
@@ -84,6 +107,10 @@ class _AccountPageState extends State<AccountPage> {
           const SizedBox(
             height: 20,
           ),
+          _buildSection3(),
+          const SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );
@@ -94,8 +121,8 @@ class _AccountPageState extends State<AccountPage> {
       children: [
         CustomImage(
           profile["img"].toString(),
-          width: 70,
-          height: 70,
+          width: 100,
+          height: 100,
           radius: 20,
         ),
         const SizedBox(
@@ -106,6 +133,7 @@ class _AccountPageState extends State<AccountPage> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
+            // fontFamily: 'Oswald',
           ),
         ),
       ],
@@ -120,7 +148,7 @@ class _AccountPageState extends State<AccountPage> {
           child: SettingBox(
             title: "Courses",
             icon: "assets/icons/enroll.svg",
-            color: AppColor.sky,
+            // color: AppColor.sky,
             isButton: true,
             onTap : () {
               setState(() {
@@ -137,7 +165,7 @@ class _AccountPageState extends State<AccountPage> {
         ),
         Expanded(
           child: SettingBox(
-            title: "Check coins",
+            title: "Coins",
             icon: "assets/icons/coin.svg",
             isButton: true,
             onTap: () {
@@ -154,7 +182,7 @@ class _AccountPageState extends State<AccountPage> {
         ),
         Expanded(
           child: SettingBox(
-            title: "Check balance",
+            title: "Balance",
             icon: "assets/icons/money.svg",
             isButton: true,
             onTap: () {
@@ -259,45 +287,49 @@ class _AccountPageState extends State<AccountPage> {
             leadingIcon: "assets/icons/help.svg",
             bgIconColor: AppColor.yellow,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 45),
-            child: Divider(
-              height: 0,
-              color: Colors.grey.withOpacity(0.8),
-            ),
-          ),
-          SettingItem(
-            title: "Log Out",
-            leadingIcon: "assets/icons/logout.svg",
-            bgIconColor: AppColor.darker,
-          ),
+          
+          // SettingItem(
+          //   title: "Log Out",
+          //   leadingIcon: "assets/icons/logout.svg",
+          //   bgIconColor: AppColor.darker,
+          //   onTap: () async {
+          //     context.read<AuthenticationService>().SignOut();
+          //   },
+          // ),
         ],
       ),
     );
   }
 
-  // Widget _buildSection3() {
-  //   return Container(
-  //     padding: const EdgeInsets.symmetric(horizontal: 15),
-  //     decoration: BoxDecoration(
-  //       borderRadius: BorderRadius.circular(5),
-  //       color: AppColor.cardColor,
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: AppColor.shadowColor.withOpacity(0.1),
-  //           spreadRadius: 1,
-  //           blurRadius: 1,
-  //           offset: Offset(0, 1), // changes position of shadow
-  //         ),
-  //       ],
-  //     ),
-  //     child: SettingItem(
-  //       title: "Log Out",
-  //       leadingIcon: "assets/icons/logout.svg",
-  //       bgIconColor: AppColor.darker,
-  //     ),
-  //   );
-  // }
+  Widget _buildSection3() {
+    return GestureDetector(
+      onTap: () async {
+        // await _firebaseauth.signOut();
+        FirebaseAuth.instance.signOut();
+        Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) =>
+          LogIn()));
+      },
+      child: Center(
+        child: Container(
+          // width: 150,
+          padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+          decoration: BoxDecoration(
+            color: AppColor.primary,
+            borderRadius: BorderRadius.circular(30)
+          ),
+          child: Center(
+            child: Text(
+              "Logout",
+              style: TextStyle(
+                color: Colors.white,
+                  fontSize: 20.0,
+                  fontFamily: 'Oswald',
+                  fontWeight: FontWeight.bold),
+            )),
+        ),
+      ),);
+  }
 
   Future<void> _showError(BuildContext context, String title, String mess) async {
     return showDialog<void>(
@@ -320,9 +352,9 @@ class _AccountPageState extends State<AccountPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Ok'),
+              child: Text('Ok', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.green,
+                backgroundColor: AppColor.primary,
               ),
             ),
           ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/model/courseModel.dart';
+import 'package:flutter_application_1/screens/course_detail.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/course_item.dart';
@@ -55,13 +56,11 @@ class _myCourse extends State<myCourse> {
   AppBar buildAppbar() {
     return AppBar(
       backgroundColor: Colors.white,
-      title: Padding(
-        padding: EdgeInsets.only(left: 100),
-        child: Text(
+      centerTitle: true,
+      title: Text(
           "My Courses",
-          style: TextStyle(color: AppColor.textColor),
+          style: TextStyle(color: AppColor.textColor, fontFamily: 'Oswald'),
         ),
-      ),
       iconTheme: IconThemeData(color: AppColor.textColor),
       leading: IconButton(
         icon: Icon(
@@ -83,9 +82,9 @@ class _myCourse extends State<myCourse> {
           child: GestureDetector(
             onTap: () {
               print(myCourses.length);
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) =>
-              //         CourseDetailPage(data: {"course": features[index]})));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      CourseDetailPage(data: {"course": myCourses[index].toJSON()})));
             },
             child: CourseItem(
               data: myCourses[index].toJSON(),

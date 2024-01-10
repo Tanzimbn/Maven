@@ -5,7 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/screens/addCourse.dart';
 import 'package:flutter_application_1/page/home_page.dart';
 import 'package:flutter_application_1/screens/auth/login.dart';
+import 'package:flutter_application_1/screens/maven.dart';
 import 'package:flutter_application_1/screens/quiz.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'package:flutter_application_1/screens/welcome_page.dart';
 
@@ -27,6 +29,7 @@ Future<void> main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
+  SharedPreferences.setMockInitialValues({});
 
   runApp(MyApp());
 }
@@ -42,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LogIn(),
+      home: maven_splash(),
     );
   }
 }

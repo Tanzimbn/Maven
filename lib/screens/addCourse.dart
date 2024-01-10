@@ -7,6 +7,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/firebase/firebaseVideo.dart';
 import 'package:flutter_application_1/model/categoryModel.dart';
 import 'package:flutter_application_1/model/courseModel.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/CustomTextField.dart';
 import 'package:flutter_application_1/widgets/HeightSpace.dart';
 import 'package:flutter_application_1/widgets/button.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -25,6 +27,10 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CreateCourse extends StatefulWidget {
+  CreateCourse({Key? key}) : super(key: key) {
+    _courseController = Get.find<courseController>();
+  }
+  var _courseController;
   @override
   _CreateCoursePageState createState() => _CreateCoursePageState();
 }
@@ -60,9 +66,10 @@ class _CreateCoursePageState extends State<CreateCourse> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Create Course",
-          style: TextStyle(color: AppColor.mainColor, fontFamily: ''),
+          style: TextStyle(color: AppColor.mainColor, fontFamily: 'Oswald'),
         ),
         leading: BackButton(
           color: AppColor.mainColor,
@@ -164,7 +171,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
                                 color: AppColor.primary,
                                 fontWeight: FontWeight.w500,
                               ),
-                              border: InputBorder.none,
+                              // border: InputBorder.none,
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: AppColor.primary,
@@ -291,7 +298,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
                       onPressed: () {
                         _showAddResourceDialog(context);
                       },
-                      child: Text('Add Video or Quiz'),
+                      child: Text('Add Video or Quiz', style: TextStyle(color: Colors.white),),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.primary,
                         shape: RoundedRectangleBorder(
@@ -306,17 +313,18 @@ class _CreateCoursePageState extends State<CreateCourse> {
                       ),
                     )
                     : ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() {
                           isloading = true;
                         });
-                        _createCourse();
-                        setState(() {
-                          isloading = false;
-                        });
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => RootApp()));
+                        if(await _createCourse()) {
+                          setState(() {
+                            isloading = false;
+                          });
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RootApp()));
+                        }
                       },
-                      child: Text('Create Course'),
+                      child: Text('Create Course', style: TextStyle(color: Colors.white),),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.primary,
                         shape: RoundedRectangleBorder(
@@ -355,7 +363,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
                   Navigator.of(context).pop();
                   _showAddVideoDialog(context);
                 },
-                child: Text('Add Video'),
+                child: Text('Add Video', style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.secondary,
                 ),
@@ -366,7 +374,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
                   Navigator.of(context).pop();
                   _showAddQuizDialog(context);
                 },
-                child: Text('Add Quiz'),
+                child: Text('Add Quiz', style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.secondary,
                 ),
@@ -421,7 +429,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: Text('Cancel', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColor.secondary,
               ),
@@ -445,7 +453,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
                   _showError(context, "Give input correctly!");
                 }
               },
-              child: Text('Add'),
+              child: Text('Add', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColor.secondary,
               ),
@@ -549,7 +557,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: Text('Cancel', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColor.secondary,
               ),
@@ -583,7 +591,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
                 });
                 Navigator.of(context).pop();
               },
-              child: Text('Add'),
+              child: Text('Add', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColor.secondary,
               ),
@@ -624,7 +632,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
     );
   }
 
-  Future<void> _createCourse() async {
+  Future<bool> _createCourse() async {
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
     for (var i = 0; i < videos.length; i++) {
       var item = videos[i].toJSON();
@@ -639,7 +647,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
       title: titleController.text,
       description: descriptionController.text,
       category: categoryController,
-      payment: paymentController.text as num,
+      payment: int.tryParse(paymentController.text),
       rating: 0,
       rating_count : 0,
       videos: videos,
@@ -658,5 +666,8 @@ class _CreateCoursePageState extends State<CreateCourse> {
     quizzes.clear();
     resources.clear();
     profilePictureUploaded = false;
+    await Get.find<courseController>().loadAllCourse();
+    print("shob shes");
+    return true;
   }
 }

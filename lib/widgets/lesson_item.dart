@@ -11,13 +11,13 @@ class LessonItem extends StatelessWidget {
     required this.enrolled,
     this.complete = false,
     this.ongoing = false,
-    required this.onVideoComplete,
+    // required this.onVideoComplete,
   }) : super(key: key);
   final data;
   final bool enrolled;
   final bool complete;
   final bool ongoing;
-  final Function(bool) onVideoComplete;
+  // final Function(bool) onVideoComplete;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,14 +79,14 @@ class LessonItem extends StatelessWidget {
               ],
             ),
           ),
-          ongoing ?
+          ongoing || complete ?
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.pushReplacement(context, MaterialPageRoute(
                 
                   builder: (context) =>
                       VideoPlayerPage(data: data,
-                        onVideoComplete: onVideoComplete,
+                        // onVideoComplete: onVideoComplete,
                         complete: complete,
                       )));
             },

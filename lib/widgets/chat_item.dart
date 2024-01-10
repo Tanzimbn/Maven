@@ -1,26 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/noticationController.dart';
+import 'package:flutter_application_1/model/notification.dart';
 import 'package:flutter_application_1/theme/color.dart';
+import 'package:get/get.dart';
 import 'chat_notify.dart';
 import 'custom_image.dart';
 
 class ChatItem extends StatelessWidget {
-  const ChatItem(
-    this.chatData, {
+  const ChatItem({
     Key? key,
-    this.onTap,
-    this.isNotified = true,
-    this.profileSize = 50,
+    this.chatData,
+    required this.ontap,
   }) : super(key: key);
 
   final chatData;
-  final bool isNotified;
-  final GestureTapCallback? onTap;
-  final double profileSize;
+  final Function() ontap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Get.find<notificationController>().updateNotification(chatData.id ,FirebaseAuth.instance.currentUser!.uid.toString());
+        ontap;
+      },
       child: Container(
         margin: EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
@@ -39,7 +42,7 @@ class ChatItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildPhoto(),
+            // _buildPhoto(),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -63,32 +66,31 @@ class ChatItem extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Text(
-            chatData['last_text'],
+            chatData.message,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontSize: 13),
           ),
         ),
-        if (isNotified)
+        if (chatData.seen == false)
           Padding(
             padding: const EdgeInsets.only(right: 5),
-            child: ChatNotify(
-              number: chatData['notify'],
-              boxSize: 17,
-              color: AppColor.red,
+            child: Icon(
+              Icons.circle_notifications,
+              color: AppColor.primary,
             ),
           )
       ],
     );
   }
 
-  Widget _buildPhoto() {
-    return CustomImage(
-      chatData['image'],
-      width: profileSize,
-      height: profileSize,
-    );
-  }
+  // Widget _buildPhoto() {
+  //   return CustomImage(
+  //     chatData['image'],
+  //     width: profileSize,
+  //     height: profileSize,
+  //   );
+  // }
 
   Widget buildNameAndTime() {
     return Row(
@@ -96,22 +98,22 @@ class ChatItem extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Text(
-            chatData['name'],
+            chatData.title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
           ),
         ),
         const SizedBox(width: 5),
-        Text(
-          chatData['date'],
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 11,
-            color: Colors.grey,
-          ),
-        )
+        // Text(
+        //   chatData['date'],
+        //   maxLines: 1,
+        //   overflow: TextOverflow.ellipsis,
+        //   style: TextStyle(
+        //     fontSize: 11,
+        //     color: Colors.grey,
+        //   ),
+        // )
       ],
     );
   }

@@ -12,13 +12,13 @@ class VideoPlayerPage extends StatefulWidget {
   final data;
   // final videos;
   // final int currentIndex;
-  final Function(bool) onVideoComplete;
+  // final Function(bool) onVideoComplete;
   final complete;
 
   VideoPlayerPage({
     required this.data,
     // required this.currentIndex,
-    required this.onVideoComplete,
+    // required this.onVideoComplete,
     required this.complete,
   });
   
@@ -66,74 +66,114 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.primary,
       appBar: AppBar(
-        title: Text(widget.data['video']["title"]),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () {
-              // _goToNextVideo();
-            },
+        backgroundColor: AppColor.primary,
+        toolbarHeight: 100,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: AppColor.appBgColor),
+        title: Text(widget.data['video']["title"],
+          style: TextStyle(
+            color: Colors.white,
           ),
-        ],
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+          ),
+          onPressed: () {
+            // Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) =>
+                CourseDetailPage(data: {"course": widget.data['course']})),
+            );  
+          },
+        ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Text(
-          //   'Video ${currentIndex + 1} / ${widget.videos.length}',
-          //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          // ),
-          // SizedBox(height: 20),
-          Container(
-            width: double.infinity,
-            height: 200, // Adjust the height as needed
-            child: _controller.value.isInitialized
-                ? buildVideo()
-                : CircularProgressIndicator(),
-          ),
-          SizedBox(height: 20),
-          already_seen ?
-          SizedBox()
-          : isloading ?
-          Center(
-              child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(AppColor.primary),
+      body: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(50),
+              topRight: Radius.circular(50),
+            ),
+            color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Text(
+              //   'Video ${currentIndex + 1} / ${widget.videos.length}',
+              //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              // ),
+              // SizedBox(height: 20),
+              _controller.value.isInitialized
+              ? 
+              Container(
+                width: double.infinity,
+                height: 200, // Adjust the height as needed
+                child: buildVideo()
+              )
+              : 
+              Center(
+                child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                ),
               ),
-          )
-          : ElevatedButton(
-            onPressed: () async {
-              setState(() {
-                isloading = true;
-              });
-              if(videocompleteSeen) {
-                widget.onVideoComplete(true);
-                await Get.find<enrolledController>().updateResource(FirebaseAuth.instance.currentUser!.uid, widget.data['course']['id'], true);
-                setState(() {
-                  videocompleteSeen = true;
-                  already_seen = true;
-                });
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) =>
-                            CourseDetailPage(data: {"course": widget.data['course']})),
-                      );  
-              }
-              else {
-                await _showMessage(context, "You haven't seen full video.", true, "Sorry!");
-              }
-              setState(() {
-                isloading = false;
-              });
-            }, 
-            child: Text('Marked as completed'),
+              SizedBox(height: 20),
+              already_seen ?
+              SizedBox()
+              : isloading ?
+              Center(
+                  child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                  ),
+              )
+              : ElevatedButton(
+                style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(AppColor.actionColor),
+                      minimumSize: MaterialStateProperty.all(Size(150, 40)),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)))),
+                onPressed: () async {
+                  setState(() {
+                    isloading = true;
+                  });
+                  if(videocompleteSeen) {
+                    // widget.onVideoComplete(true);
+                    await Get.find<enrolledController>().updateResource(FirebaseAuth.instance.currentUser!.uid, widget.data['course']['id'], true);
+                    setState(() {
+                      videocompleteSeen = true;
+                      already_seen = true;
+                    });
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context) =>
+                                CourseDetailPage(data: {"course": widget.data['course']})),
+                          );  
+                  }
+                  else {
+                    await _showMessage(context, "You haven't seen full video.", true, "Sorry!");
+                  }
+                  setState(() {
+                    isloading = false;
+                  });
+                }, 
+                child: Text('Marked as completed',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     _goToNextVideo();
+              //   },
+              //   child: Text('Next Video'),
+              // ),
+            ],
           ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     _goToNextVideo();
-          //   },
-          //   child: Text('Next Video'),
-          // ),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -146,8 +186,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
           });
         },
         child: Icon(
+            color: Colors.white,
           _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
         ),
+        backgroundColor: AppColor.actionColor,
       ),
     );
   }
@@ -171,7 +213,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Ok'),
+              child: Text('Ok', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _error ? AppColor.red : AppColor.green,
               ),
