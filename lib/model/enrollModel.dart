@@ -2,15 +2,15 @@
 
 class enrollModel {
   String? id, course_id, user_id, state;
-  List<String>? video_seen, quiz_complete;
+  List<dynamic> video_seen = [], quiz_complete = [];
 
   enrollModel({
-    this.id,
-    this.course_id,
-    this.user_id,
-    this.state,
-    this.video_seen,
-    this.quiz_complete,
+    required this.id,
+    required this.course_id,
+    required this.user_id,
+    this.state = "Not complete",
+    required this.video_seen,
+    required this.quiz_complete,
   });
 
   toJSON() {

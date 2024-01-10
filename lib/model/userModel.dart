@@ -2,7 +2,7 @@
 
 class userModel {
   String? id, name, email, img;
-  int? point;
+  num? point, money;
 
   userModel({
     this.id,
@@ -10,6 +10,7 @@ class userModel {
     this.email,
     this.img,
     this.point,
+    this.money,
   });
 
   toJSON() {
@@ -19,6 +20,7 @@ class userModel {
       'email' : email,
       'img' : img,
       'point' : point,
+      'money' : money,
     };
   }
 
@@ -28,5 +30,6 @@ class userModel {
     email = map['email'];
     img = map['img'];
     point = map['point'];
+    money = map['money'];
   }
 }

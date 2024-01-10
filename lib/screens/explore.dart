@@ -54,9 +54,28 @@ class _ExplorePageState extends State<ExplorePage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: AppColor.appBarColor,
+            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
             pinned: true,
-            title: getAppBar(),
+            centerTitle: true,
+            title: Text(
+              "Explore",
+              style: TextStyle(
+                color: AppColor.textColor,
+                // fontWeight: FontWeight.w600,
+                fontSize: 24,
+                fontFamily: 'Oswald',
+              ),
+            ),
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SvgPicture.asset(
+                'assets/icons/logo_blackColor.svg',
+                // color: AppColor.textColor,
+                width: 10,
+                height: 10,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
           ),
           SliverToBoxAdapter(
             child: getSearchBox(),
@@ -70,20 +89,6 @@ class _ExplorePageState extends State<ExplorePage> {
     );
   }
 
-  getAppBar() {
-    return Container(
-      child: Row(children: [
-        Text(
-          "Explore",
-          style: TextStyle(
-            color: AppColor.textColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
-        )
-      ]),
-    );
-  }
 
   getSearchBox() {
     return Padding(
@@ -93,9 +98,9 @@ class _ExplorePageState extends State<ExplorePage> {
           Expanded(
             child: Container(
               height: 40,
-              padding: EdgeInsets.only(bottom: 3),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 3),
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColor.primary,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
@@ -106,15 +111,21 @@ class _ExplorePageState extends State<ExplorePage> {
                   ]),
               child: TextField(
                 controller: searchValue,
+                style: TextStyle(
+                  color: Colors.white,
+                  decoration: TextDecoration.none,
+                ),
+                cursorColor: Colors.white,
                 decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.search,
-                      color: Colors.grey,
+                      color: Colors.white,
                     ),
                     contentPadding: EdgeInsets.symmetric(vertical: 1),
                     border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
                     hintText: "Search",
-                    hintStyle: TextStyle(color: Colors.grey, fontSize: 15)),
+                    hintStyle: TextStyle(color: Color.fromARGB(190, 255, 255, 255), fontSize: 15)),
                     onChanged: (value) {
                       setState(() {
                         updateList();
@@ -170,10 +181,9 @@ class _ExplorePageState extends State<ExplorePage> {
           padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
           child: GestureDetector(
             onTap: () {
-              print(updatedList.length);
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) =>
-              //         CourseDetailPage(data: {"course": features[index]})));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      CourseDetailPage(data: {"course": updatedList[index].toJSON()})));
             },
             child: CourseItem(
               data: updatedList[index].toJSON(),

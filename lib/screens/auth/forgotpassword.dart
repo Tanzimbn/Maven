@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/screens/auth/login.dart';
 import 'package:flutter_application_1/screens/auth/signup.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/theme/color.dart';
 
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({Key? key}) : super(key: key);
@@ -13,27 +15,35 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   String email = "";
   TextEditingController mailcontroller = new TextEditingController();
+  bool is_loading = false;
 
     final _formkey= GlobalKey<FormState>();
 
-  // resetPassword() async {
-  //   try {
-  //     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //         content: Text(
-  //       "Password Reset Email has been sent !",
-  //       style: TextStyle(fontSize: 18.0),
-  //     )));
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == "user-not-found") {
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //           content: Text(
-  //         "No user found for that email.",
-  //         style: TextStyle(fontSize: 18.0),
-  //       )));
-  //     }
-  //   }
-  // }
+  resetPassword() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "Password Reset Email has been sent !",
+        style: TextStyle(fontSize: 18.0),
+      )));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "No user found for that email.",
+          style: TextStyle(fontSize: 18.0),
+        )));
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Invalid Email.",
+          style: TextStyle(fontSize: 18.0),
+        )));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,19 +110,42 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           ),
                         ),
                         SizedBox(height: 40.0),
-                        Container(
+                        is_loading ?
+                        Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                          ),
+                        ) 
+                        : Container(
                           // margin: EdgeInsets.only(left: 60.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GestureDetector(
-                                onTap: () {
-                                  if(_formkey.currentState!.validate()){
+                                onTap: () async {
+                                  setState(() {
+                                    is_loading = true;
+                                  });
+                                  final bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(mailcontroller.text);
+                                  if(_formkey.currentState!.validate() && emailValid){
+                                    print("valid");
                                     setState(() {
                                       email= mailcontroller.text;
                                     });
-                                    // resetPassword();
+                                    await resetPassword();
                                   }
+                                  else {
+                                    print("as");
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        content: Text(
+                                      "Invalid Email!",
+                                      style: TextStyle(fontSize: 18.0),
+                                    )));
+                                  }
+                                  setState(() {
+                                    is_loading = false;
+                                  });
                                 },
                                 child: Container(
                                     width: 140,

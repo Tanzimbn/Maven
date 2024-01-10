@@ -1,7 +1,9 @@
 var profile = {
   "name" : "Tanzim Bin Nasir",
-  "image" : "https://avatars.githubusercontent.com/u/86506519?v=4",
-  "email" : "sangvaleap.vanny@gmail.com"
+  "img" : "https://avatars.githubusercontent.com/u/86506519?v=4",
+  "email" : "sangvaleap.vanny@gmail.com",
+  "point" : 0,
+  'money' : 0,
 };
 
 List categories = [

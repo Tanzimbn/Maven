@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/CourseController.dart';
+import 'package:flutter_application_1/model/courseModel.dart';
 import 'package:flutter_application_1/screens/course_detail.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
@@ -16,6 +17,7 @@ class HomePage extends StatefulWidget {
 
   HomePage() {
     _courseController = Get.find<courseController>();
+
   }
 
   @override
@@ -23,6 +25,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<courseModel> allCourse = [], featureCourse = [], recommendCourse = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    List<courseModel> shuffle = List.from(widget._courseController.allCourse..shuffle());
+    print(shuffle.length);
+    for(int i = 0; i < 10 && i < shuffle.length; i++) {
+      featureCourse.add(shuffle[i]);
+    }
+    shuffle.sort((a, b) => a.rating!.compareTo(b.rating!));
+    for(int i = 0; i < 10 && i < shuffle.length; i++) {
+      recommendCourse.add(shuffle[i]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,13 +193,13 @@ class _HomePageState extends State<HomePage> {
         viewportFraction: .75,
       ),
       items: List.generate(
-        widget._courseController.allCourse.length,
+        featureCourse.length,
         (index) => FeatureItem(
-          data: widget._courseController.allCourse[index].toJSON(),
+          data: featureCourse[index].toJSON(),
           onTap: () {
-            // Navigator.of(context).push(MaterialPageRoute(
-            //     builder: (context) =>
-            //         CourseDetailPage(data: {"course": features[index]})));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    CourseDetailPage(data: {"course": featureCourse[index].toJSON()})));
           },
         ),
       ),
@@ -193,12 +212,17 @@ class _HomePageState extends State<HomePage> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(
-          widget._courseController.allCourse.length,
+          recommendCourse.length,
           (index) => Padding(
             padding: const EdgeInsets.only(right: 10),
             child: RecommendItem(
-              data: widget._courseController.allCourse[index].toJSON(),
-              
+              data: recommendCourse[index].toJSON(),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      CourseDetailPage(data: {"course": recommendCourse[index].toJSON()})
+                ));
+              },
             ),
           ),
         ),

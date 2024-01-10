@@ -8,11 +8,15 @@ class SettingBox extends StatelessWidget {
     required this.title,
     required this.icon,
     this.color = AppColor.darker,
+    this.onTap,
+    this.isButton = false,
   }) : super(key: key);
 
   final title;
   final String icon;
   final Color color;
+  final GestureTapCallback? onTap;
+  final bool isButton;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +34,31 @@ class SettingBox extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
+      child: isButton ? GestureDetector(
+        onTap: onTap,
+        child: Column(
+          children: [
+            SvgPicture.asset(
+              icon,
+              color: color,
+              width: 22,
+              height: 22,
+            ),
+            const SizedBox(
+              height: 7,
+            ),
+            Text(
+              title,
+              style: TextStyle(
+                color: color,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      )
+      : Column(
         children: [
           SvgPicture.asset(
             icon,
@@ -48,7 +76,7 @@ class SettingBox extends StatelessWidget {
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
-          )
+          ),
         ],
       ),
     );

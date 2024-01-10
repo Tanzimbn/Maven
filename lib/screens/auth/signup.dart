@@ -65,7 +65,7 @@ class _SignUpState extends State<SignUp> {
   _adduser(String uid) async {
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
     String url = profilePictureUploaded ? await StoreData().uploadUserPhoto(profilePicture!.path, uid) : "";
-    userModel user = userModel(id: uid, name: namecontroller.text, email: mailcontroller.text, img: url, point: 0);
+    userModel user = userModel(id: uid, name: namecontroller.text, email: mailcontroller.text, img: url, point: 0, money: 0);
     _firestore.collection("User").doc().set(user.toJSON());
   }
   
@@ -85,7 +85,7 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 130.0, left: 20.0, right: 20.0),
+                  margin: EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -141,7 +141,7 @@ class _SignUpState extends State<SignUp> {
                         padding: EdgeInsets.symmetric(
                             vertical: 3.0, horizontal: 5.0),
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 0, 0, 0),
+                            color: AppColor.primary,
                             borderRadius: BorderRadius.circular(30)),
                         child: TextFormField(
                           controller: namecontroller,
@@ -169,7 +169,7 @@ class _SignUpState extends State<SignUp> {
                         padding: EdgeInsets.symmetric(
                             vertical: 3.0, horizontal: 5.0),
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 0, 0, 0),
+                            color: AppColor.primary,
                             borderRadius: BorderRadius.circular(30)),
                         child: TextFormField(
                           controller: mailcontroller,
@@ -198,7 +198,7 @@ class _SignUpState extends State<SignUp> {
                         padding: EdgeInsets.symmetric(
                             vertical: 3.0, horizontal: 5.0),
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 0, 0, 0),
+                            color: AppColor.primary,
                             borderRadius: BorderRadius.circular(30)),
                         child: TextFormField(
                           obscureText: true,
@@ -240,7 +240,7 @@ class _SignUpState extends State<SignUp> {
                             height: 55,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 255, 17, 69),
+                                color: AppColor.primary,
                                 borderRadius: BorderRadius.circular(30)),
                             child: Center(
                                 child: Text(
@@ -257,7 +257,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 10,
+                  height: MediaQuery.of(context).size.height / 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -285,7 +285,7 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 8,
+                  height: 0,
                 ),
               ],
             ),

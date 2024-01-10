@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/video.dart';
-import 'package:flutter_application_1/screens/video_player_page.dart';
+import 'package:flutter_application_1/screens/quiz.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/widgets/custom_image.dart';
 
-class LessonItem extends StatelessWidget {
-  const LessonItem({
+class excerciseItem extends StatelessWidget {
+  const excerciseItem({
     Key? key, 
     this.data,
     required this.enrolled,
     this.complete = false,
     this.ongoing = false,
-    // required this.onVideoComplete,
   }) : super(key: key);
   final data;
   final bool enrolled;
   final bool complete;
   final bool ongoing;
-  // final Function(bool) onVideoComplete;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +32,7 @@ class LessonItem extends StatelessWidget {
               )
             ]),
         child: Row(children: [
-          Icon(Icons.video_collection_outlined ,color: AppColor.secondary,size: 15,),
+          Icon(Icons.quiz_outlined ,color: AppColor.secondary,size: 15,),
           SizedBox(
             width: 10,
           ),
@@ -44,7 +41,7 @@ class LessonItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  data['video']["title"],
+                  data['quiz']["title"],
                   style: TextStyle(
                     color: AppColor.textColor,
                     fontSize: 14,
@@ -79,16 +76,12 @@ class LessonItem extends StatelessWidget {
               ],
             ),
           ),
-          ongoing || complete ?
+          ongoing ?
           ElevatedButton(
             onPressed: () {
               Navigator.pushReplacement(context, MaterialPageRoute(
-                
                   builder: (context) =>
-                      VideoPlayerPage(data: data,
-                        // onVideoComplete: onVideoComplete,
-                        complete: complete,
-                      )));
+                      QuizPage(data: data)));
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(AppColor.primary),

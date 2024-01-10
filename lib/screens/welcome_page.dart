@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase/splashService.dart';
 import 'package:flutter_application_1/screens/auth/login.dart';
+import 'package:flutter_application_1/theme/color.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:flutter_application_1/page/home_page.dart';
 
@@ -15,7 +16,7 @@ class _welcome_pageState extends State<welcome_page> {
 
   void initState() {
     super.initState();
-    splashScreen.isLogin(context);
+    // splashScreen.isLogin(context);
   }
 
   @override
@@ -25,7 +26,7 @@ class _welcome_pageState extends State<welcome_page> {
         PageViewModel(
           title: "Welcom to MAVEN",
           body: "Elevate Everyday Excellence: Learn and Teach Life's Skills with Maven!",
-          image: buildImage('assets/images/1.png'),
+          image: logobuildImage('assets/images/1.png'),
           decoration: getdecoration()
         ),
         PageViewModel(
@@ -52,10 +53,10 @@ class _welcome_pageState extends State<welcome_page> {
       showSkipButton: true,
       skip: Text('Skip'),
       onSkip: () => goToHome(context), 
-      skipStyle: TextButton.styleFrom(primary: const Color.fromARGB(255, 0, 0, 0)),  
-      doneStyle: TextButton.styleFrom(primary: const Color.fromARGB(255, 0, 0, 0)), 
+      skipStyle: TextButton.styleFrom(primary: AppColor.primary),  
+      doneStyle: TextButton.styleFrom(primary: AppColor.primary), 
       next: Icon(Icons.arrow_forward),
-      nextStyle: TextButton.styleFrom(primary: const Color.fromARGB(255, 0, 0, 0)),
+      nextStyle: TextButton.styleFrom(primary: AppColor.primary),
       dotsDecorator: getDotDecoration(),
     )
   );
@@ -66,7 +67,7 @@ class _welcome_pageState extends State<welcome_page> {
 
   DotsDecorator getDotDecoration() => DotsDecorator(
         color: Color(0xFFBDBDBD),
-        activeColor: const Color.fromARGB(255, 0, 0, 0),
+        activeColor: AppColor.primary,
         size: Size(10, 10),
         activeSize: Size(22, 10),
         activeShape: RoundedRectangleBorder(
@@ -76,10 +77,13 @@ class _welcome_pageState extends State<welcome_page> {
 
   Widget buildImage(String path) =>
       Center(child: Image.asset(path, width: 350));
+  
+  Widget logobuildImage(String path) =>
+      Center(child: Image.asset(path, width: 350, color: AppColor.primary,));
 
   PageDecoration getdecoration() => PageDecoration(
-    titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-    bodyTextStyle: TextStyle(fontSize: 12),
+    titleTextStyle: TextStyle(fontSize: 20, fontFamily: 'Oskwald', fontWeight: FontWeight.bold, color: AppColor.textColor),
+    bodyTextStyle: TextStyle(fontSize: 12, color: AppColor.textColor, fontFamily: 'Oskwald'),
     bodyPadding: EdgeInsets.all(6).copyWith(bottom: 0),
     imagePadding: EdgeInsets.all(14),
     pageColor: const Color.fromARGB(255, 255, 255, 255),

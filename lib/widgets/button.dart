@@ -16,7 +16,7 @@ Widget MyButton(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
-            side: const BorderSide(width: .5),
+            // side: const BorderSide(width: .5),
           ),
           onPressed: () {
             if (whenPressed != null) {
@@ -25,7 +25,7 @@ Widget MyButton(
               () {};
             }
           },
-          child: name!.text.fontFamily(p).make())
+          child: name!.text.fontFamily(p).color(Colors.white).make())
       .box
       .height(height)
       .width(width)

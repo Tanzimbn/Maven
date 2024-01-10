@@ -1,35 +1,23 @@
-//// Create category database ////
 - admin can control category (if possible at the end)
 
-/////Add category option in add couse/////
-
-Ensure course perfectly created in database:
-/////-video upload
-/////-video id, quiz id
-
-//////////Add image option in signup ///////// complete
-
-Create courses with User signup/signin process
-
-Show course in homepage
-
-Show course in category list
-
-Course search, filter
+filter by price, rating
 
 User profile complete
 - edit image and name (if possible at end)
-- show created courses
-- show enrolled_courses
 - logout
+- payment, bookmark(optional)
+
+After clicking on course : check if it is enrolled or not, if yes go to enroll view, otherwise course_detail
 
 Course view
-- video resources list, quiz resources list
+////////////- video resources list, quiz resources list
 - play video and complete video
 - quiz response
 - course complete detect and point added, update course status, update user course list
 
 
 
-User can see others profile
+User can see others profile (Optional)
 - Add Instructor id in course collection
+
+Use userController

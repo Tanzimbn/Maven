@@ -11,7 +11,7 @@ class CourseItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
             width: 200,
-            height: 290,
+            height: 300,
             padding: EdgeInsets.all(10),
             margin: EdgeInsets.only(bottom: 5),
             decoration: BoxDecoration(
@@ -72,7 +72,10 @@ class CourseItem extends StatelessWidget {
                               getAttribute(Icons.star, data["rating"].toString(),
                                   Colors.yellow),
                             ],
-                          )
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
                         ],
                       ),
                     ))
