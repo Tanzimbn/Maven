@@ -8,14 +8,9 @@ import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/category_item.dart';
 import 'package:flutter_application_1/widgets/course_item.dart';
 import 'package:get/get.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class ExplorePage extends StatefulWidget {
-  var _courseController;
-
-  ExplorePage({Key? key}) : super(key: key) {
-    _courseController = Get.find<courseController>();
-  }
+  ExplorePage({Key? key}) : super(key: key) {}
 
   @override
   State<ExplorePage> createState() => _ExplorePageState();
@@ -32,7 +27,7 @@ class _ExplorePageState extends State<ExplorePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    allList = List.from(widget._courseController.allCourse);
+    allList = List.from(Get.find<courseController>().allCourse);
     allList.sort((a, b) => b.rating!.compareTo(a.rating!));
     updatedList = allList;
   }

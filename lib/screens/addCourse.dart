@@ -1,11 +1,8 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/firebase/firebaseVideo.dart';
@@ -15,7 +12,6 @@ import 'package:flutter_application_1/model/quizModel.dart';
 import 'package:flutter_application_1/model/videoModel.dart';
 import 'package:flutter_application_1/screens/root_app.dart';
 import 'package:flutter_application_1/theme/color.dart';
-import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/CustomTextField.dart';
 import 'package:flutter_application_1/widgets/HeightSpace.dart';
 import 'package:flutter_application_1/widgets/button.dart';
@@ -23,14 +19,10 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CreateCourse extends StatefulWidget {
-  CreateCourse({Key? key}) : super(key: key) {
-    _courseController = Get.find<courseController>();
-  }
-  var _courseController;
+  CreateCourse({Key? key}) : super(key: key) {}
   @override
   _CreateCoursePageState createState() => _CreateCoursePageState();
 }
@@ -307,7 +299,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
                       ),
                     ),
                     SizedBox(height: 16.0),
-                    isloading ? Center(
+                    isloading  ? Center(
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation(AppColor.primary),
                       ),
@@ -322,6 +314,11 @@ class _CreateCoursePageState extends State<CreateCourse> {
                             isloading = false;
                           });
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RootApp()));
+                        }
+                        else {
+                          setState(() {
+                            isloading = false;
+                          });
                         }
                       },
                       child: Text('Create Course', style: TextStyle(color: Colors.white),),
@@ -564,32 +561,37 @@ class _CreateCoursePageState extends State<CreateCourse> {
             ),
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  quizzes.add(quizModel(
-                    id: DateTime.now().toString(),  
-                    title: quizTitleController.text,
-                    question: quizQuestionController.text,
-                    op1: quizOption1Controller.text,
-                    op2: quizOption2Controller.text,
-                    op3: quizOption3Controller.text,
-                    op4: quizOption4Controller.text,
-                    answer: correctAnswerController.text,
-                    point: int.parse(pointsController.text)
-                  ));
-                  resources.add({
-                    'type' : 'quiz',
-                    'title' : quizTitleController.text,
+                if(checkall()) {
+                  setState(() {
+                    quizzes.add(quizModel(
+                      id: DateTime.now().toString(),  
+                      title: quizTitleController.text,
+                      question: quizQuestionController.text,
+                      op1: quizOption1Controller.text,
+                      op2: quizOption2Controller.text,
+                      op3: quizOption3Controller.text,
+                      op4: quizOption4Controller.text,
+                      answer: correctAnswerController.text,
+                      point: int.parse(pointsController.text)
+                    ));
+                    resources.add({
+                      'type' : 'quiz',
+                      'title' : quizTitleController.text,
+                    });
+                    quizTitleController.clear();
+                    quizQuestionController.clear();
+                    quizOption1Controller.clear();
+                    quizOption2Controller.clear();
+                    quizOption3Controller.clear();
+                    quizOption4Controller.clear();
+                    correctAnswerController.clear();
+                    pointsController.clear();
                   });
-                  quizTitleController.clear();
-                  quizQuestionController.clear();
-                  quizOption1Controller.clear();
-                  quizOption2Controller.clear();
-                  quizOption3Controller.clear();
-                  quizOption4Controller.clear();
-                  correctAnswerController.clear();
-                  pointsController.clear();
-                });
-                Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }
+                else {
+                  _showError(context, "Give valid input and points should be (1 to 5)");
+                }
               },
               child: Text('Add', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
@@ -602,6 +604,22 @@ class _CreateCoursePageState extends State<CreateCourse> {
     );
   }
 
+  bool checkall() {
+    if(quizQuestionController.text == "") return false;
+    if(quizOption1Controller.text == "") return false;
+    if(quizOption2Controller.text == "") return false;
+    if(quizOption3Controller.text == "") return false;
+    if(quizOption4Controller.text == "") return false;
+    if(quizTitleController.text == "") return false;
+    if(correctAnswerController.text == "") return false;
+    if(pointsController.text == "") return false;
+    if(correctAnswerController.text.compareTo('1') < 0 || correctAnswerController.text.compareTo('4') > 0)
+    return false;
+    if(pointsController.text.compareTo('1') < 0 || pointsController.text.compareTo('5') > 0)
+    return false;
+    return true;
+  }
+  
   Future<void> _showError(BuildContext context, String mess) async {
     return showDialog<void>(
       context: context,
@@ -621,7 +639,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Ok'),
+              child: Text('Ok', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColor.secondary,
               ),
@@ -633,6 +651,24 @@ class _CreateCoursePageState extends State<CreateCourse> {
   }
 
   Future<bool> _createCourse() async {
+    if(videos.length == 0 || quizzes.length == 0) {
+      _showError(context, "Add more resources.");
+      return false;
+    }
+    if(profilePictureUploaded == false || 
+    titleController.text == "" || 
+    descriptionController.text == "" || 
+    categoryController == "" || 
+    paymentController.text == "") {
+      _showError(context, "Enter all Course informations.");
+      return false;
+    }
+    int? price = int.tryParse(paymentController.text);
+    if(quizzes.length * 5 + 10 > price!) {
+      _showError(context, "Course payment should be increased.");
+      return false;
+    }
+
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
     for (var i = 0; i < videos.length; i++) {
       var item = videos[i].toJSON();
@@ -653,7 +689,7 @@ class _CreateCoursePageState extends State<CreateCourse> {
       videos: videos,
       quizzes: quizzes,
       img: url,
-      instructor: profile['name'].toString(),
+      instructor: FirebaseAuth.instance.currentUser?.uid,
     );
     print(course.toJSON());
     print("Course upload successfully!");

@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/enrolledController.dart';
 import 'package:flutter_application_1/screens/course_detail.dart';
 import 'package:flutter_application_1/theme/color.dart';
-import 'package:flutter_application_1/widgets/basic_overlay_widget.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
-import 'video.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   final data;
@@ -31,7 +29,7 @@ class VideoPlayerPage extends StatefulWidget {
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late VideoPlayerController _controller;
   // late int currentIndex;
-  late ValueNotifier<double> _progressNotifier;
+  // late ValueNotifier<double> _progressNotifier;
   bool videocompleteSeen = false;
   bool already_seen = false;
   bool isloading = false;
@@ -45,7 +43,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       ..initialize().then((_) {
         setState(() {});
       });
-    _progressNotifier = ValueNotifier<double>(0.0);
+    // _progressNotifier = ValueNotifier<double>(0.0);
     _controller.addListener(() {
       if (_controller.value.position == _controller.value.duration &&
           !_controller.value.isPlaying && widget.complete == false) {

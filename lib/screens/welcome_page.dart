@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/firebase/splashService.dart';
 import 'package:flutter_application_1/screens/auth/login.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:flutter_application_1/page/home_page.dart';
 
 class welcome_page extends StatefulWidget {
   const welcome_page({Key? key}) : super(key:key);
@@ -12,11 +10,9 @@ class welcome_page extends StatefulWidget {
 }
 
 class _welcome_pageState extends State<welcome_page> {
-  splashService splashScreen = splashService();
 
   void initState() {
     super.initState();
-    // splashScreen.isLogin(context);
   }
 
   @override

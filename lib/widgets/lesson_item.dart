@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/video.dart';
 import 'package:flutter_application_1/screens/video_player_page.dart';
 import 'package:flutter_application_1/theme/color.dart';
-import 'package:flutter_application_1/widgets/custom_image.dart';
 
 class LessonItem extends StatelessWidget {
   const LessonItem({

@@ -5,17 +5,11 @@ import 'package:flutter_application_1/model/courseModel.dart';
 import 'package:flutter_application_1/model/enrollModel.dart';
 import 'package:flutter_application_1/screens/course_detail.dart';
 import 'package:flutter_application_1/theme/color.dart';
-import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/course_item.dart';
 import 'package:get/get.dart';
 
 class enrollCourse extends StatefulWidget {
-  var _courseController, _enrollController;
-
-  enrollCourse({Key? key}) : super(key: key) {
-    _courseController = Get.find<courseController>();
-    _enrollController = Get.find<enrolledController>();
-  }
+  enrollCourse({Key? key}) : super(key: key) {}
 
   @override
   State<enrollCourse> createState() => _enrollCourse();
@@ -30,8 +24,8 @@ class _enrollCourse extends State<enrollCourse> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    allCourse = List.from(widget._courseController.allCourse);
-    enroll = List.from(widget._enrollController.allCourse);
+    allCourse = List.from(Get.find<courseController>().allCourse);
+    enroll = List.from(Get.find<enrolledController>().allCourse);
     for(int i = 0; i < enroll.length; i++) {
       var temp = enroll[i].toJSON();
       enrollId.add(temp['course_id']);

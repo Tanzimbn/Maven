@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/enrolledController.dart';
-import 'package:flutter_application_1/firebase/AuthenticationService.dart';
-import 'package:flutter_application_1/model/enrollModel.dart';
 import 'package:flutter_application_1/screens/auth/login.dart';
 import 'package:flutter_application_1/screens/enroll_course.dart';
 import 'package:flutter_application_1/screens/my_course.dart';
@@ -13,27 +11,21 @@ import 'package:flutter_application_1/widgets/setting_box.dart';
 import 'package:flutter_application_1/widgets/setting_item.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class AccountPage extends StatefulWidget {
 
-  var _enrollController;
-  AccountPage({Key? key}) : super(key: key){
-    _enrollController = Get.find<enrolledController>();
-  }
+  AccountPage({Key? key}) : super(key: key){}
 
   @override
   _AccountPageState createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
-  // late final FirebaseAuth _firebaseauth;
-  List<enrollModel> _enrollCourse = [];
+  
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _enrollCourse = List.from(widget._enrollController.allCourse);
   }
 
   @override

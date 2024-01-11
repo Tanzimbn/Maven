@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/controllers/enrolledController.dart';
 import 'package:flutter_application_1/controllers/noticationController.dart';
-import 'package:flutter_application_1/model/courseModel.dart';
 import 'package:flutter_application_1/model/enrollModel.dart';
 import 'package:flutter_application_1/screens/root_app.dart';
 
@@ -16,15 +15,11 @@ import 'package:flutter_application_1/widgets/lesson_item.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:readmore/readmore.dart';
 import 'package:get/get.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 
 class CourseDetailPage extends StatefulWidget {
-  CourseDetailPage({Key? key, required this.data}) : super(key: key) {
-    _enrollController = Get.find<enrolledController>();
-  }
+  CourseDetailPage({Key? key, required this.data}) : super(key: key) {}
   final data;
-  var _enrollController;
   @override
   State<CourseDetailPage> createState() => _CourseDetailPageState();
 }
@@ -40,7 +35,7 @@ class _CourseDetailPageState extends State<CourseDetailPage>
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-    List<enrollModel> allcouse = List.from(widget._enrollController.allCourse);
+    List<enrollModel> allcouse = List.from(Get.find<enrolledController>().allCourse);
     _enrollCourse = List.from(
       allcouse.where((element) => element.toJSON()['course_id'] == widget.data['course']['id']));
     courseData = widget.data["course"];
@@ -321,7 +316,7 @@ class _CourseDetailPageState extends State<CourseDetailPage>
               paymentOngoing = true;
             });
             num currentBalance = profile['money'] as num;
-            if(currentBalance >= courseData["payment"]) {
+            if(currentBalance >= courseData["payment"] && courseData['instructor'] != FirebaseAuth.instance.currentUser?.uid) {
               if(await update(currentBalance - courseData["payment"])) {}
               print("Payment done!");
               await Get.find<notificationController>().addNotification(
@@ -344,8 +339,11 @@ class _CourseDetailPageState extends State<CourseDetailPage>
               //     builder: (context) =>
               //         EnrolledCourseDetail(data: {"course": courseData})));
             }
-            else {
+            else if(courseData['instructor'] != FirebaseAuth.instance.currentUser?.uid){
               _showMessage(context, "Not enough balance in your account!", true, "Error!");
+            }
+            else {
+              _showMessage(context, "You can't enroll your course!", true, "Error!");
             }
             setState(() {
               paymentOngoing = false;
@@ -450,7 +448,7 @@ class _CourseDetailPageState extends State<CourseDetailPage>
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Ok'),
+              child: Text('Ok', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _error ? AppColor.red : AppColor.green,
               ),

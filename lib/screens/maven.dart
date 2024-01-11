@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/controllers/enrolledController.dart';
 import 'package:flutter_application_1/controllers/noticationController.dart';
-import 'package:flutter_application_1/firebase/splashService.dart';
 import 'package:flutter_application_1/screens/auth/login.dart';
 import 'package:flutter_application_1/screens/root_app.dart';
 import 'package:flutter_application_1/screens/welcome_page.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:get/get.dart';
-import 'package:introduction_screen/introduction_screen.dart';
-import 'package:flutter_application_1/page/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class maven_splash extends StatefulWidget {
@@ -43,12 +40,12 @@ class _maven_splash extends State<maven_splash> {
     Future.delayed(Duration(seconds: 5), () async {
       if (isFirstTime) {
         // If it's the first time, navigate to the introduction page
+        prefs.setBool('isFirstTime', false);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => welcome_page(),
           ),
         );
-        prefs.setBool('isFirstTime', false);
       } 
       else {
         User? user = _auth.currentUser;

@@ -7,18 +7,12 @@ import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/category_box.dart';
 import 'package:flutter_application_1/widgets/feature_item.dart';
-import 'package:flutter_application_1/widgets/notification_box.dart';
 import 'package:flutter_application_1/widgets/recommend_item.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
-  var _courseController;
-
-  HomePage() {
-    _courseController = Get.find<courseController>();
-
-  }
+  HomePage({Key? key}) : super(key: key) {}
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -31,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    List<courseModel> shuffle = List.from(widget._courseController.allCourse..shuffle());
+    List<courseModel> shuffle = List.from(Get.find<courseController>().allCourse..shuffle());
     print(shuffle.length);
     for(int i = 0; i < 10 && i < shuffle.length; i++) {
       recommendCourse.add(shuffle[i]);
