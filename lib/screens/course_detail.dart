@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/controllers/enrolledController.dart';
 import 'package:flutter_application_1/controllers/noticationController.dart';
 import 'package:flutter_application_1/model/courseModel.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_application_1/widgets/bookmark_box.dart';
 import 'package:flutter_application_1/widgets/custom_image.dart';
 import 'package:flutter_application_1/widgets/excercise_item.dart';
 import 'package:flutter_application_1/widgets/lesson_item.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 import 'package:readmore/readmore.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -32,6 +34,7 @@ class _CourseDetailPageState extends State<CourseDetailPage>
   late TabController tabController;
   late var courseData;
   bool paymentOngoing = false;
+  num rating_given = 0;
   List<enrollModel> _enrollCourse = [];
   @override
   void initState() {
@@ -383,6 +386,8 @@ class _CourseDetailPageState extends State<CourseDetailPage>
               });
               // check all quiz done and video watched
               if(_enrollCourse[0].quiz_complete.length == courseData['quizzes'].length && _enrollCourse[0].video_seen.length == courseData['videos'].length) {
+                await  _getrating();
+                await Get.find<courseController>().updateInfo(widget.data['course']['id'], rating_given);
                 if(await completeUpdate()) {
                   await Get.find<notificationController>().addNotification(
                   FirebaseAuth.instance.currentUser!.uid, 
@@ -453,6 +458,24 @@ class _CourseDetailPageState extends State<CourseDetailPage>
           ],
         );
       },
+    );
+  }
+
+  Future<void> _getrating() {
+    return showDialog(
+      context: context, 
+      builder: (context) {
+        return RatingDialog(
+          title: Text("Congratulations!", style: TextStyle(color: AppColor.primary, fontFamily: 'Pacifico'),), 
+          message:Text("Give the course a rating", style: TextStyle(color: const Color.fromARGB(255, 2, 2, 2), fontFamily: 'Oswald'),),
+          submitButtonText: "SUBMIT", 
+          onSubmitted: (rating) async {
+            rating_given = rating.rating;
+          },
+          enableComment: false,
+          submitButtonTextStyle: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontFamily: 'Oswald'),
+        );
+      }
     );
   }
 
