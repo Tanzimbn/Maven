@@ -34,11 +34,11 @@ class _HomePageState extends State<HomePage> {
     List<courseModel> shuffle = List.from(widget._courseController.allCourse..shuffle());
     print(shuffle.length);
     for(int i = 0; i < 10 && i < shuffle.length; i++) {
-      featureCourse.add(shuffle[i]);
-    }
-    shuffle.sort((a, b) => a.rating!.compareTo(b.rating!));
-    for(int i = 0; i < 10 && i < shuffle.length; i++) {
       recommendCourse.add(shuffle[i]);
+    }
+    shuffle.sort((a, b) => b.rating!.compareTo(a.rating!));
+    for(int i = 0; i < 10 && i < shuffle.length; i++) {
+      featureCourse.add(shuffle[i]);
     }
   }
 

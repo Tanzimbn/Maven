@@ -26,11 +26,14 @@ class _ExplorePageState extends State<ExplorePage> {
   List<courseModel> updatedList = [], allList = [];
   TextEditingController searchValue = TextEditingController();
   String categoryValue = 'All';
+  bool is_rating = true;
+  bool bottomToTop = true;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     allList = List.from(widget._courseController.allCourse);
+    allList.sort((a, b) => b.rating!.compareTo(a.rating!));
     updatedList = allList;
   }
   void updateList() {
@@ -44,6 +47,19 @@ class _ExplorePageState extends State<ExplorePage> {
         element.toJSON()['title'].toLowerCase().contains(searchValue.text.toLowerCase())
         && element.toJSON()['category'] == categoryValue
       ));
+    }
+
+    if(is_rating) {
+      if(bottomToTop)
+      updatedList.sort((a, b) => b.rating!.compareTo(a.rating!));
+      else
+      updatedList.sort((a, b) => a.rating!.compareTo(b.rating!));
+    }
+    else {
+      if(bottomToTop)
+      updatedList.sort((a, b) => b.payment!.compareTo(a.payment!));
+      else
+      updatedList.sort((a, b) => a.payment!.compareTo(b.payment!));
     }
     
   }
@@ -135,19 +151,101 @@ class _ExplorePageState extends State<ExplorePage> {
             ),
           ),
           SizedBox(
-            width: 10,
+            width: 5,
           ),
-          Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: AppColor.primary,
-              borderRadius: BorderRadius.circular(10),
+          GestureDetector(
+            onTap: () {
+              if(is_rating == false) {
+                setState(() {
+                  is_rating = true;
+                  updateList();
+                });
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                color: is_rating ? AppColor.primary : AppColor.cardColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: SvgPicture.asset(
+                "assets/icons/star.svg",
+                color: is_rating ? Colors.white : const Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
-            child: SvgPicture.asset(
-              "assets/icons/filter.svg",
-              color: Colors.white,
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          GestureDetector(
+            onTap: () {
+              if(is_rating == true) {
+                setState(() {
+                  is_rating = false;
+                  updateList();
+                });
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                color: is_rating == false ? AppColor.primary : AppColor.cardColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                Icons.sell_outlined,
+                color: is_rating == false ? Colors.white : const Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
-          )
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          GestureDetector(
+            onTap: () {
+              if(bottomToTop == false) {
+                setState(() {
+                  bottomToTop = true;
+                  updateList();
+                });
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                color: bottomToTop? AppColor.primary : AppColor.cardColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: SvgPicture.asset(
+                "assets/icons/bottom-to-top.svg",
+                color: bottomToTop ? Colors.white : const Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          GestureDetector(
+            onTap: () {
+              if(bottomToTop == true) {
+                setState(() {
+                  bottomToTop = false;
+                  updateList();
+                });
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                color: bottomToTop == false ? AppColor.primary : AppColor.cardColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: SvgPicture.asset(
+                "assets/icons/top-to-bottom.svg",
+                color: bottomToTop == false ? Colors.white : const Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
+          ),
         ],
       ),
     );

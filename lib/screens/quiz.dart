@@ -145,6 +145,11 @@ class _QuizPageState extends State<QuizPage> {
                       }
                       else {
                         await _showMessage(context, "Wrong answer", true, "Oops!");
+                        await Get.find<enrolledController>().updateResource(FirebaseAuth.instance.currentUser!.uid, widget.data['course']['id'], false);
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) =>
+                              CourseDetailPage(data: {"course": widget.data['course']})),
+                        ); 
                       }
                       setState(() {
                         submitted = false;
