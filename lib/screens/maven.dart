@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/CourseController.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_application_1/screens/auth/login.dart';
 import 'package:flutter_application_1/screens/root_app.dart';
 import 'package:flutter_application_1/screens/welcome_page.dart';
 import 'package:flutter_application_1/theme/color.dart';
+import 'package:flutter_application_1/utils/data.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,7 +34,7 @@ class _maven_splash extends State<maven_splash> {
     // });
   }
 
-  _checkFirstTime() async {
+  Future _checkFirstTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
 
@@ -40,7 +42,7 @@ class _maven_splash extends State<maven_splash> {
     Future.delayed(Duration(seconds: 5), () async {
       if (isFirstTime) {
         // If it's the first time, navigate to the introduction page
-        prefs.setBool('isFirstTime', false);
+        await prefs.setBool('isFirstTime', false);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => welcome_page(),
@@ -58,8 +60,19 @@ class _maven_splash extends State<maven_splash> {
           var _enrollController = Get.put(enrolledController());
           var _notificationController = Get.put(notificationController());
           await _courseController.loadAllCourse();
-          await _notificationController.loadAllNotification(FirebaseAuth.instance.currentUser!.uid);
-          await _enrollController.loadAllCourse(FirebaseAuth.instance.currentUser!.uid);
+          String uid = FirebaseAuth.instance.currentUser!.uid;
+          await _notificationController.loadAllNotification(uid);
+          await _enrollController.loadAllCourse(uid);
+          var username = await FirebaseFirestore.instance
+          .collection("User")
+          .where("id", isEqualTo: uid)
+          .get();
+          profile['name'] = username.docs[0].data()['name'];
+          profile['email'] = username.docs[0].data()['email'];
+          profile['img'] = username.docs[0].data()['img'];
+          profile['point'] = username.docs[0].data()['point'];
+          profile['money'] = username.docs[0].data()['money'];
+          
           setState(() {
             is_loading = false;
           });
@@ -84,16 +97,26 @@ class _maven_splash extends State<maven_splash> {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: Center(
-      child: is_loading ?
-      CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(AppColor.primary),
-      )
-      : Image.asset(
-                          "assets/images/1.png",
-                          width: 100,
-                          height: 100,
-                          color: AppColor.primary,
-                        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+            Image.asset(
+                "assets/images/1.png",
+                                width: 100,
+                                height: 100,
+                                color: AppColor.primary,
+                              ),
+          is_loading ?
+          SizedBox(height: MediaQuery.of(context).size.height / 8,)
+          : SizedBox(),
+          is_loading ?
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(const Color.fromARGB(255, 149, 149, 149)),
+            )
+          : SizedBox(height: 0,),
+        ],
       ),
+    ),
   );
 }

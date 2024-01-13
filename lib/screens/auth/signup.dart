@@ -84,7 +84,7 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
+                  margin: EdgeInsets.only(top: 150.0, left: 20.0, right: 20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

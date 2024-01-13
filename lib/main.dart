@@ -23,7 +23,7 @@ Future<void> main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
-  SharedPreferences.setMockInitialValues({});
+  // SharedPreferences.setMockInitialValues({});
 
   runApp(MyApp());
 }
