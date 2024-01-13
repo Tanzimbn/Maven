@@ -1,15 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_application_1/screens/addCourse.dart';
-import 'package:flutter_application_1/page/home_page.dart';
-import 'package:flutter_application_1/screens/auth/login.dart';
 import 'package:flutter_application_1/screens/maven.dart';
-import 'package:flutter_application_1/screens/quiz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
-import 'package:flutter_application_1/screens/welcome_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +23,7 @@ Future<void> main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
-  SharedPreferences.setMockInitialValues({});
+  // SharedPreferences.setMockInitialValues({});
 
   runApp(MyApp());
 }

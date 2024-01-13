@@ -23,6 +23,7 @@ class _QuizPageState extends State<QuizPage> {
   bool submitted = false;
 
   void initState() {
+    super.initState();
     question = widget.data['quiz']['question'];
     options.add(widget.data['quiz']['op1']); options.add(widget.data['quiz']['op2']); options.add(widget.data['quiz']['op3']); options.add(widget.data['quiz']['op4']);
     point = widget.data['quiz']['point'];

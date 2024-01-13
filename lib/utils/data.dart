@@ -5,6 +5,7 @@ var profile = {
   "point" : 0,
   'money' : 0,
 };
+var first_time = true;
 
 List categories = [
   {

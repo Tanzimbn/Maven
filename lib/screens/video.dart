@@ -18,6 +18,7 @@ class _VideoPageState extends State<VideoPage> {
   bool complete = false;
 
   void initState() {
+    super.initState();
     title = widget.data['title'];
     url = widget.data['url'];
     complete = widget.complete;

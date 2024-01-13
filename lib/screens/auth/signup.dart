@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/firebase/firebaseVideo.dart';
 import 'package:flutter_application_1/model/userModel.dart';
 import 'package:flutter_application_1/screens/auth/login.dart';
-import 'package:flutter_application_1/page/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/color.dart';
@@ -28,7 +27,7 @@ class _SignUpState extends State<SignUp> {
   final _formkey = GlobalKey<FormState>();
 
   registration() async {
-    if (password != null) {
+    if (password != "") {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
@@ -85,7 +84,7 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
+                  margin: EdgeInsets.only(top: 150.0, left: 20.0, right: 20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

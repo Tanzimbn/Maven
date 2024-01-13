@@ -1,11 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/noticationController.dart';
-import 'package:flutter_application_1/model/notification.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:get/get.dart';
-import 'chat_notify.dart';
-import 'custom_image.dart';
 
 class ChatItem extends StatelessWidget {
   const ChatItem({

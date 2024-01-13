@@ -2,16 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/noticationController.dart';
 import 'package:flutter_application_1/model/notification.dart';
-import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/chat_item.dart';
-import 'package:flutter_application_1/widgets/custom_textfield.dart';
 import 'package:get/get.dart';
 
 class NotificationPage extends StatefulWidget {
-  NotificationPage({Key? key}) : super(key: key) {
-    _notificationController = Get.find<notificationController>();
-  }
-  var _notificationController;
+  NotificationPage({Key? key}) : super(key: key) {}
 
   @override
   _NotificationPageState createState() => _NotificationPageState();
@@ -23,7 +18,7 @@ class _NotificationPageState extends State<NotificationPage> {
   void initState() {
     super.initState();
     temp = List.from(
-      widget._notificationController.allnotification
+      Get.find<notificationController>().allnotification
       .where((element) => element.toJSON()['user_id'] == FirebaseAuth.instance.currentUser!.uid)
     );
     _notifications = temp.reversed.toList();

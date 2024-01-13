@@ -1,9 +1,6 @@
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/model/enrollModel.dart';
-import 'package:flutter_application_1/utils/data.dart';
 import 'package:get/get.dart';
 
 class enrolledController extends GetxController {
@@ -48,7 +45,6 @@ class enrolledController extends GetxController {
     for (var doc in snapshot.docs) {
       await doc.reference.delete();
     }
-    enrollModel index;
     for(int i = 0; i < allCourse.length; i++) {
       if(allCourse[i].user_id == uid && allCourse[i].course_id == course_id) {
         allCourse.remove(allCourse[i]);

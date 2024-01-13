@@ -8,11 +8,8 @@ import 'package:flutter_application_1/widgets/course_item.dart';
 import 'package:get/get.dart';
 
 class myCourse extends StatefulWidget {
-  var _courseController;
 
-  myCourse({Key? key}) : super(key: key) {
-    _courseController = Get.find<courseController>();
-  }
+  myCourse({Key? key}) : super(key: key) {}
 
   @override
   State<myCourse> createState() => _myCourse();
@@ -25,7 +22,7 @@ class _myCourse extends State<myCourse> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    allCourse = List.from(widget._courseController.allCourse);
+    allCourse = List.from(Get.find<courseController>().allCourse);
     for(int i = 0; i < allCourse.length; i++) {
       var temp = allCourse[i].toJSON();
       if(temp['instructor'] == profile['name'].toString()) {
