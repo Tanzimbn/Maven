@@ -4,6 +4,7 @@ import 'package:flutter_application_1/controllers/enrolledController.dart';
 import 'package:flutter_application_1/screens/auth/login.dart';
 import 'package:flutter_application_1/screens/enroll_course.dart';
 import 'package:flutter_application_1/screens/my_course.dart';
+import 'package:flutter_application_1/screens/payment.dart';
 import 'package:flutter_application_1/theme/color.dart';
 import 'package:flutter_application_1/utils/data.dart';
 import 'package:flutter_application_1/widgets/custom_image.dart';
@@ -266,6 +267,11 @@ class _AccountPageState extends State<AccountPage> {
             title: "Payment",
             leadingIcon: "assets/icons/wallet.svg",
             bgIconColor: AppColor.purple,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      PaymentPage()));
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(left: 45),
