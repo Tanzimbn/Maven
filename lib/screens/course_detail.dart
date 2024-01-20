@@ -317,12 +317,17 @@ class _CourseDetailPageState extends State<CourseDetailPage>
             });
             num currentBalance = profile['money'] as num;
             if(currentBalance >= courseData["payment"] && courseData['instructor'] != FirebaseAuth.instance.currentUser?.uid) {
-              if(await update(currentBalance - courseData["payment"])) {}
+              if(await update(currentBalance - courseData["payment"], courseData["payment"], courseData["instructor"])) {}
               print("Payment done!");
               await Get.find<notificationController>().addNotification(
                   FirebaseAuth.instance.currentUser!.uid, 
                   "New course enrolled", 
                   "You have successfully enrolled ${widget.data['course']['title']}", 
+                  false);
+              await Get.find<notificationController>().addNotification(
+                  courseData['instructor'], 
+                  "Congratulations!", 
+                  "A user enrolled your course \"${widget.data['course']['title']}\"", 
                   false);
               setState(() {
                 paymentOngoing = false;
@@ -383,6 +388,8 @@ class _CourseDetailPageState extends State<CourseDetailPage>
                 paymentOngoing = true;
               });
               // check all quiz done and video watched
+              print(_enrollCourse[0].video_seen.length);
+              print(courseData['videos'].length);
               if(_enrollCourse[0].quiz_complete.length == courseData['quizzes'].length && _enrollCourse[0].video_seen.length == courseData['videos'].length) {
                 await  _getrating();
                 await Get.find<courseController>().updateInfo(widget.data['course']['id'], rating_given);
@@ -392,6 +399,7 @@ class _CourseDetailPageState extends State<CourseDetailPage>
                   "Course Completed", 
                   "You have successfully completed ${widget.data['course']['title']}", 
                   false);
+                  
                   Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context) =>
                             RootApp()),
@@ -419,8 +427,8 @@ class _CourseDetailPageState extends State<CourseDetailPage>
       );
   }
 
-  Future<bool> update(num value) {
-    Future<bool> temp = Get.find<enrolledController>().updateInfo(FirebaseAuth.instance.currentUser!.uid, courseData['id'], value);
+  Future<bool> update(num value, num payment, String instructor) {
+    Future<bool> temp = Get.find<enrolledController>().updateInfo(FirebaseAuth.instance.currentUser!.uid, courseData['id'], value, payment, instructor);
     return temp;
   }
 

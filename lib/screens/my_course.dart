@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/CourseController.dart';
 import 'package:flutter_application_1/model/courseModel.dart';
@@ -25,7 +26,7 @@ class _myCourse extends State<myCourse> {
     allCourse = List.from(Get.find<courseController>().allCourse);
     for(int i = 0; i < allCourse.length; i++) {
       var temp = allCourse[i].toJSON();
-      if(temp['instructor'] == profile['name'].toString()) {
+      if(temp['instructor'] == FirebaseAuth.instance.currentUser?.uid) {
         myCourses.add(allCourse[i]);
       }
     }

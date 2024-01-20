@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/model/enrollModel.dart';
+import 'package:flutter_application_1/model/userModel.dart';
 import 'package:get/get.dart';
 
 class enrolledController extends GetxController {
@@ -19,7 +20,7 @@ class enrolledController extends GetxController {
     }
   }
 
-  Future<bool> updateInfo(String uid, String courseId, num value) async {
+  Future<bool> updateInfo(String uid, String courseId, num value, num payment, String instructor) async {
     enrollModel enroll = enrollModel(
       id: "${uid}_${courseId}", course_id: courseId, user_id: uid, video_seen: [], quiz_complete: []);
     FirebaseFirestore.instance.collection('Enrollment').doc().set(enroll.toJSON());
@@ -34,6 +35,23 @@ class enrolledController extends GetxController {
     //Updates the field value, using post as document reference
     batch.update(post, { 'money': value }); 
     batch.commit();
+
+    final instructorPost =  await FirebaseFirestore.instance.collection("User")
+    .where('id', isEqualTo: instructor).get();
+    userModel instructorValue = userModel.fromJson(instructorPost.docs[0].data());
+
+    final post1 =  await FirebaseFirestore.instance.collection("User")
+    .where('id', isEqualTo: instructor).get()
+    .then((QuerySnapshot snapshot) {
+          //Here we get the document reference and return to the post variable.
+          return snapshot.docs[0].reference;
+    });
+
+    batch = FirebaseFirestore.instance.batch();
+    //Updates the field value, using post as document reference
+    batch.update(post1, { 'money': (instructorValue.money! + (payment * 0.4)) }); 
+    batch.commit();
+
     await loadAllCourse(uid);
     return true;
   }
