@@ -19,5 +19,24 @@ Maven acknowledges the gap in traditional education systems regarding practical,
 <p align="center">
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/home.jpg" alt="Maven home" width="200"/>
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/explore.jpg" alt="Explore" width="200"/>
-  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/catrgory.jpg" alt="catrgory" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/category.jpg" alt="category" width="200"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/create_course.jpg" alt="create course" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/add_quiz.jpg" alt="Add quiz" width="200"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/course_detail.jpg" alt="course_detail" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/quiz.jpg" alt="quiz" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/video.jpg" alt="video" width="200"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/get_coin.jpg" alt="get_coin" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/rating.jpg" alt="rating" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/total_amount.jpg" alt="total_amount" width="200"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/notification.jpg" alt="notification" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/My_course.jpg" alt="My_course" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/enrolled_course.jpg" alt="enrolled_course" width="200"/>
 </p>
