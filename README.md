@@ -24,6 +24,7 @@ Maven acknowledges the gap in traditional education systems regarding practical,
 <p align="center">
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/create_course.jpg" alt="create course" width="200"/>
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/add_quiz.jpg" alt="Add quiz" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/notification.jpg" alt="notification" width="200"/>
 </p>
 <p align="center">
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/course_detail.jpg" alt="course_detail" width="200"/>
@@ -36,7 +37,7 @@ Maven acknowledges the gap in traditional education systems regarding practical,
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/total_amount.jpg" alt="total_amount" width="200"/>
 </p>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/notification.jpg" alt="notification" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/profile.jpg" alt="profile" width="200"/>
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/My_course.jpg" alt="My_course" width="200"/>
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/enrolled_course.jpg" alt="enrolled_course" width="200"/>
 </p>
