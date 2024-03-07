@@ -166,7 +166,6 @@ class _AccountPageState extends State<AccountPage> {
                 profile['point'];
               });
               _showError(context, "Total coins ", "${profile['point']}");
-              profile['point'] = 100;
             },
           ),
         ),

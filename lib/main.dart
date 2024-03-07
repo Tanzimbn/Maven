@@ -8,22 +8,9 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-        options: const FirebaseOptions(
-      apiKey: "AIzaSyASwlktOkXDTZOtTe3YuU3GHVg7spYH7h8",
-      appId: "1:587480634133:web:3317c4cae0f1e218a50f1c",
-      messagingSenderId: "587480634133",
-      projectId: "login-signup-94458",
-      authDomain: 'login-signup-94458.firebaseapp.com',
-      databaseURL: 'https://login-signup-94458-default-rtdb.firebaseio.com/',
-      storageBucket: 'login-signup-94458.appspot.com',
-    ));
-  } else {
-    await Firebase.initializeApp(
+  await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }
+  );
   // SharedPreferences.setMockInitialValues({});
 
   runApp(MyApp());

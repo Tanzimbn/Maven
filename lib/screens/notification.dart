@@ -21,7 +21,7 @@ class _NotificationPageState extends State<NotificationPage> {
       Get.find<notificationController>().allnotification
       .where((element) => element.toJSON()['user_id'] == FirebaseAuth.instance.currentUser!.uid)
     );
-    _notifications = temp.reversed.toList();
+    _notifications = temp;
 
   }
   
@@ -67,7 +67,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
   _buildChats() {
     return ListView.builder(
-      padding: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 50),
       shrinkWrap: true,
       itemCount: _notifications.length,
       itemBuilder:(context, index) => ChatItem(

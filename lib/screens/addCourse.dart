@@ -663,9 +663,11 @@ class _CreateCoursePageState extends State<CreateCourse> {
       _showError(context, "Enter all Course informations.");
       return false;
     }
+    int quizPrize = 0;
+    for(int i = 0; i < quizzes.length; i++) quizPrize += quizzes[i].point!;
     int? price = int.tryParse(paymentController.text);
-    if(quizzes.length * 5 + 10 > price!) {
-      _showError(context, "Course payment should be increased.");
+    if(2 * quizPrize > price!) {
+      _showError(context, "Coin prize can't be more than 50% of Course payment.");
       return false;
     }
 

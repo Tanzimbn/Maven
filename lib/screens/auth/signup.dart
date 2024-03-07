@@ -224,14 +224,22 @@ class _SignUpState extends State<SignUp> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          if (_formkey.currentState!.validate()) {
+                          if (profilePictureUploaded && _formkey.currentState!.validate()) {
                             setState(() {
                               email = mailcontroller.text;
                               name = namecontroller.text;
                               password = passwordcontroller.text;
                             });
+                            registration();
                           }
-                          registration();
+                          else if(profilePictureUploaded == false) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: AppColor.primary,
+                            content: Text(
+                              "Select your image",
+                              style: TextStyle(fontSize: 18.0),
+                            )));
+                          }
                         },
                         child: Center(
                           child: Container(
