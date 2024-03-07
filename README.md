@@ -1,7 +1,8 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/logo.png" alt="Maven Logo" width="200"/>
 </p>
-# Maven - E-Learning App
+
+## Maven - E-Learning App
 
 Maven is a unique E-learning app developed as a part of the CSE-356 (Software Engineering) course. The app is designed to revolutionize the learning experience by focusing on practical skills essential for everyday life.
 
