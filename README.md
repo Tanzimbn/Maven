@@ -13,5 +13,11 @@ Maven acknowledges the gap in traditional education systems regarding practical,
 ## Features
 <p align="center">
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/splash.jpg" alt="Maven splash" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/login.jpg" alt="Login" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/sign-up.jpg" alt="Sign-up" width="200"/>
+</p>
+<p align="center">
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/home.jpg" alt="Maven home" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/explore.jpg" alt="Explore" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/catrgory.jpg" alt="catrgory" width="200"/>
 </p>
