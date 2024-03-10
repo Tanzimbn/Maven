@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/logo.png" alt="Maven Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/maven_logo.png" alt="Maven Logo" width="200"/>
 </p>
 
 ## Maven - E-Learning App
