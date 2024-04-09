@@ -41,3 +41,7 @@ Maven acknowledges the gap in traditional education systems regarding practical,
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/My_course.jpg" alt="My_course" width="200"/>
   <img src="https://raw.githubusercontent.com/Tanzimbn/Maven/master/images/enrolled_course.jpg" alt="enrolled_course" width="200"/>
 </p>
+
+## 🔗 Links
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tanzim-bin-nasir-820a461a6/)
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/tanzimbn)
